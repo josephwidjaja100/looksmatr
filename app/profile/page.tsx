@@ -342,31 +342,46 @@ const Profile = () => {
       }
 
       if (shouldAnalyze && result.data?.profile?.photo) {
-        toast.info("analyzing your photo...");
+        toast.info("processing your photo...");
         
-        const analyzeResponse = await fetch("/api/analyze", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            imageUrl: result.data.profile.photo
-          }),
-        });
+        try {
+          const timeoutPromise = new Promise<Response>((_, reject) => 
+            setTimeout(() => reject(new Error('timeout')), 3000)
+          );
+          
+          const analyzePromise = fetch("/api/analyze", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              imageUrl: result.data.profile.photo
+            }),
+          });
 
-        if (analyzeResponse.ok) {
-          const analyzeResult = await analyzeResponse.json();
-          setProfile(prev => ({
-            ...prev,
-            attractiveness: analyzeResult.data.attractiveness
-          }));
-          editValues.attractiveness = analyzeResult.data.attractiveness;
-        }
-        else{
+          const analyzeResponse = await Promise.race([analyzePromise, timeoutPromise]);
+
+          if (analyzeResponse.ok) {
+            const analyzeResult = await analyzeResponse.json();
+            setProfile(prev => ({
+              ...prev,
+              attractiveness: analyzeResult.data.attractiveness
+            }));
+            editValues.attractiveness = analyzeResult.data.attractiveness;
+          } else {
+            setProfile(prev => ({
+              ...prev,
+              attractiveness: 0
+            }));
+            editValues.attractiveness = 0;
+          }
+        } catch (error) {
+          // Timeout or error occurred
           setProfile(prev => ({
             ...prev,
             attractiveness: 0
           }));
           editValues.attractiveness = 0;
         }
+        
         toast.success("photo uploaded successfully!")
       }
       else{
