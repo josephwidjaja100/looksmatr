@@ -10,16 +10,11 @@ if (process.env.RESEND_API_KEY) {
 }
 
 export const sendOTPEmail = async (email: string, otpCode: string, type: 'signup' | 'password-reset' = 'signup') => {
-  if (!resend) {
-    console.warn('Resend API key not set. Skipping email sending.');
-    return { success: true, data: null };
-  }
-
-  const subject = type === 'signup' ? 'complete your looksmatr account setup' : 'reset your password';
+  const subject = type === 'signup' ? 'complete your likely account setup' : 'reset your password';
   
   try {
     const { data, error } = await resend.emails.send({
-      from: 'looksmatr <onboarding@resend.dev>',
+      from: 'likely <onboarding@auth.likely.one>',
       to: [email],
       subject,
       react: OtpChatEmail({
@@ -61,7 +56,7 @@ export const sendMatchEmail = async (
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'looksmatr <onboarding@resend.dev>',
+      from: 'likely <match@likely.one>',
       to: [email],
       subject: 'you have a new match! 💘',
       react: MatchingEmail({
@@ -97,7 +92,7 @@ export const sendNoMatchEmail = async (email: string, userName: string = 'there'
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'looksmatr <onboarding@resend.dev>',
+      from: 'likely <match@likely.one>',
       to: [email],
       subject: 'we got some bad news for you 😬',
       react: NoMatchEmail({ name: userName }),

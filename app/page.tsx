@@ -1,11 +1,28 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { signIn } from "next-auth/react";
 import Link from 'next/link';
 
+// Map subdomains to their email domains and display names
+const SUBDOMAIN_CONFIG: Record<string, { emailDomain: string; displayName: string; url: string; active: boolean }> = {
+  'winchester': { emailDomain: 'winchesterthurston.org', displayName: 'Winchester Thurston', url: 'https://winchester.likely.one', active: true},
+  'stanford': { emailDomain: 'stanford.edu', displayName: 'Stanford', url: 'https://stanford.likely.one', active: true },
+  'psu': { emailDomain: 'psu.edu', displayName: 'Penn State', url: 'https://psu.likely.one', active: true },
+};
+
+// Get list of college options for dropdown
+const getCollegeOptions = () => {
+  return Object.values(SUBDOMAIN_CONFIG).map(config => config.displayName);
+};
+
 const Home = () => {
+  const [emailDomain, setEmailDomain] = useState('psu.edu');
+  const [collegeName, setCollegeName] = useState('Penn State');
+  const [isActive, setIsActive] = useState(true);
+  const [selectedCollege, setSelectedCollege] = useState('');
   const [showAuth, setShowAuth] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [authMode, setAuthMode] = useState<'signup' | 'login'>('signup');
   const [signupState, setSignupState] = useState({
     emailPrefix: '',
@@ -25,11 +42,67 @@ const Home = () => {
     success: ''
   });
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Get the current hostname
+    const hostname = window.location.hostname;
+    
+    // Extract subdomain (e.g., "stanford" from "stanford.likely.one")
+    const subdomain = hostname.split('.')[0];
+    
+    // Look up the configuration for this subdomain
+    const config = SUBDOMAIN_CONFIG[subdomain];
+    
+    if (config) {
+      setEmailDomain(config.emailDomain);
+      setCollegeName(config.displayName);
+      setIsActive(config.active);
+    } else {
+      // Default to psu if subdomain not found
+      setEmailDomain('psu.edu');
+      setCollegeName('Penn State');
+      setIsActive(true);
+    }
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+
+    if (showDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDropdown]);
+
+  // Handle college selection from dropdown
+  const handleCollegeChange = (college: string) => {
+    setSelectedCollege(college);
+    
+    // Find the config for the selected college
+    const config = Object.values(SUBDOMAIN_CONFIG).find(
+      config => config.displayName === college
+    );
+    
+    if (config) {
+      // Redirect to the hardcoded URL
+      window.location.href = config.url;
+    }
+  };
+
   const bubbles = [
     { id: 0, left: '5%', top: '10%', delay: '0s' },
     { id: 1, left: '30%', top: '20%', delay: '0.3s' },
-    { id: 2, left: '10%', top: '65%', delay: '0.6s' },
-    { id: 3, left: '35%', top: '77%', delay: '0.9s' },
+    { id: 2, left: '10%', top: '72%', delay: '0.6s' },
+    { id: 3, left: '35%', top: '85%', delay: '0.9s' },
     { id: 4, left: '10%', top: '50%', delay: '1.2s' },
     { id: 5, left: '70%', top: '70%', delay: '1.5s' },
     { id: 6, left: '80%', top: '15%', delay: '1.8s' },
@@ -48,7 +121,9 @@ const Home = () => {
   ];
 
   const handleGetMatched = () => {
-    setShowAuth(true);
+    if (isActive) {
+      setShowAuth(true);
+    }
   };
 
   const handleCloseAuth = () => {
@@ -74,7 +149,7 @@ const Home = () => {
   };
 
   const getFullEmail = (prefix: string) => {
-    return `${prefix}@stanford.edu`;
+    return `${prefix}@${emailDomain}`;
   };
 
   // SIGNUP HANDLERS
@@ -372,7 +447,7 @@ const Home = () => {
           <div className="relative">
             <input
               type="text"
-              placeholder={typeof window !== 'undefined' && window.location.hostname === 'localhost' ? "email or username" : "sunetid"}
+              placeholder="email"
               value={signupState.emailPrefix}
               onChange={(e) => {
                 const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost';
@@ -389,14 +464,12 @@ const Home = () => {
               disabled={signupState.isLoading}
               style={{ fontFamily: 'Merriweather, serif' }}
             />
-            {typeof window === 'undefined' || window.location.hostname !== 'localhost' ? (
-              <span 
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
-                style={{ fontFamily: 'Merriweather, serif' }}
-              >
-                @stanford.edu
-              </span>
-            ) : null}
+            <span 
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
+              style={{ fontFamily: 'Merriweather, serif' }}
+            >
+              @{emailDomain}
+            </span>
           </div>
 
           <input
@@ -484,17 +557,7 @@ const Home = () => {
                       const nextInput = document.querySelector(`input[data-index="${index + 1}"]`) as HTMLInputElement;
                       if (nextInput) nextInput.focus();
                     }
-                  } 
-                  // else if (value === '') {
-                  //   // Handle backspace - clear current position
-                  //   const newOtp = signupState.otp.split('');
-                  //   newOtp[index] = '';
-                  //   setSignupState(prev => ({
-                  //     ...prev,
-                  //     otp: newOtp.join(''),
-                  //     error: ''
-                  //   }));
-                  // }
+                  }
                 }}
                 onKeyDown={(e) => {
                   if (e.key === 'Backspace') {
@@ -509,7 +572,6 @@ const Home = () => {
                       }));
                     } 
                     if (index > 0) {
-                      // If current field is empty, move to previous field
                       const prevInput = document.querySelector(`input[data-index="${index - 1}"]`) as HTMLInputElement;
                       if (prevInput) {
                         prevInput.focus();
@@ -518,7 +580,6 @@ const Home = () => {
                   }
                   if (e.key === 'ArrowLeft') {
                     if (index > 0) {
-                      // If current field is empty, move to previous field
                       const prevInput = document.querySelector(`input[data-index="${index - 1}"]`) as HTMLInputElement;
                       if (prevInput) {
                         prevInput.focus();
@@ -608,14 +669,12 @@ const Home = () => {
             disabled={loginState.isLoading}
             style={{ fontFamily: 'Merriweather, serif' }}
           />
-          {typeof window === 'undefined' || window.location.hostname !== 'localhost' ? (
-            <span 
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
-              style={{ fontFamily: 'Merriweather, serif' }}
-            >
-              @stanford.edu
-            </span>
-          ) : null}
+          <span 
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
+            style={{ fontFamily: 'Merriweather, serif' }}
+          >
+            @{emailDomain}
+          </span>
         </div>
 
         <input
@@ -721,6 +780,12 @@ const Home = () => {
           >
             looks matter.
           </h1>
+          <h2 
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-700 tracking-tight mt-2"
+            style={{ fontFamily: 'Merriweather, serif' }}
+          >
+            for {collegeName}
+          </h2>
           <p 
             className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mt-2 max-w-4xl text-center px-4"
             style={{ fontFamily: 'Merriweather, serif' }}
@@ -728,13 +793,69 @@ const Home = () => {
             get a date who's actually as attractive as you
           </p>
           
-          <button
-            onClick={handleGetMatched}
-            className="mt-6 px-8 py-4 bg-gray-800 text-white font-bold rounded-full hover:bg-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-            style={{ fontFamily: 'Merriweather, serif' }}
-          >
-            get matched
-          </button>
+          <div className="mt-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+            <button
+              onClick={handleGetMatched}
+              disabled={!isActive}
+              className={`px-8 py-4 font-bold rounded-full transition-all duration-300 shadow-lg ${
+                isActive 
+                  ? 'bg-gray-800 text-white hover:bg-gray-700 hover:shadow-xl hover:scale-105 cursor-pointer' 
+                  : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+              }`}
+              style={{ fontFamily: 'Merriweather, serif' }}
+            >
+              {isActive ? 'get matched' : 'coming soon...'}
+            </button>
+
+            <div ref={dropdownRef} className="relative flex flex-col items-center sm:items-start">
+              <button
+                onClick={(e) => {
+                  setShowDropdown(!showDropdown);
+                }}
+                className="text-gray-800 font-bold underline hover:text-gray-600 transition-colors flex items-center gap-2 relative z-10"
+                style={{ fontFamily: 'Merriweather, serif', fontSize: '1rem' }}
+              >
+                not from {collegeName}?
+                <svg
+                  className={`w-4 h-4 transition-transform duration-300 ${showDropdown ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              {showDropdown && (
+                <div 
+                  onClick={(e) => e.stopPropagation()}
+                  className="absolute top-full mt-1 bg-white border-2 border-gray-400/40 rounded-lg shadow-xl max-h-60 overflow-y-auto z-50"
+                  style={{ 
+                    left: '-1px',
+                    width: dropdownRef.current?.querySelector('button')?.offsetWidth 
+                      ? `${dropdownRef.current.querySelector('button')?.offsetWidth}px` 
+                      : 'auto',
+                    minWidth: 'max-content'
+                  }}
+                >
+                  {getCollegeOptions().map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCollegeChange(option);
+                      }}
+                      className="w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors text-sm text-gray-700 first:rounded-t-lg last:rounded-b-lg whitespace-nowrap"
+                      style={{ fontFamily: 'Merriweather, serif' }}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {showAuth && (
