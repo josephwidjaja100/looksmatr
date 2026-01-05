@@ -134,7 +134,7 @@ const Home = () => {
         setSignupState(prev => ({
           ...prev,
           flow: 'otp-verification',
-          success: data.message,
+          success: 'verification code sent!',
           isLoading: false
         }));
       } else {
@@ -463,7 +463,7 @@ const Home = () => {
               we sent a 6-digit code to <strong>{getFullEmail(signupState.emailPrefix)}</strong>
             </p>
           </div>
-          <div className="flex justify-center gap-2 mb-4">
+          <div className="w-full flex gap-2 mb-4">
             {[0, 1, 2, 3, 4, 5].map((index) => (
               <input
                 key={index}
@@ -535,7 +535,7 @@ const Home = () => {
                   }
                 }}
                 data-index={index}
-                className="w-12 h-14 text-center text-2xl border-2 border-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent text-gray-900"
+                className="flex-1 min-w-[44px] sm:min-w-[56px] h-14 sm:h-16 text-center text-xl sm:text-2xl border border-gray-300 bg-white/60 shadow-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-700 text-gray-900"
                 disabled={signupState.isLoading}
                 style={{ fontFamily: 'Merriweather, serif' }}
               />
@@ -800,7 +800,7 @@ const Home = () => {
                 </div>
               )}
               {authMode === 'signup' && signupState.success && (
-                <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm" style={{ fontFamily: 'Merriweather, serif' }}>
+                <div className="mb-4 p-3 bg-green-100 border-2 border-green-300 rounded-lg text-green-800 text-center text-sm font-medium shadow-sm" style={{ fontFamily: 'Merriweather, serif' }}>
                   {signupState.success}
                 </div>
               )}
