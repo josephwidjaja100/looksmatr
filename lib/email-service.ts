@@ -4,10 +4,7 @@ import MatchingEmail from '@/components/MatchingEmail';
 import NoMatchEmail from '@/components/NoMatchEmail';
 import { sanitizeEmail } from '@/lib/auth-utils';
 
-let resend: Resend | undefined;
-if (process.env.RESEND_API_KEY) {
-  resend = new Resend(process.env.RESEND_API_KEY);
-}
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendOTPEmail = async (email: string, otpCode: string, type: 'signup' | 'password-reset' = 'signup') => {
   const subject = type === 'signup' ? 'complete your likely account setup' : 'reset your password';
@@ -49,11 +46,6 @@ export const sendMatchEmail = async (
     attractivenessDiff: number;
   }
 ) => {
-  if (!resend) {
-    console.warn('Resend API key not set. Skipping email sending.');
-    return { success: false, error: 'Email service not configured' };
-  }
-
   try {
     const { data, error } = await resend.emails.send({
       from: 'likely <match@likely.one>',
@@ -85,11 +77,6 @@ export const sendMatchEmail = async (
 };
 
 export const sendNoMatchEmail = async (email: string, userName: string = 'there') => {
-  if (!resend) {
-    console.warn('Resend API key not set. Skipping email sending.');
-    return { success: false, error: 'Email service not configured' };
-  }
-
   try {
     const { data, error } = await resend.emails.send({
       from: 'likely <match@likely.one>',
