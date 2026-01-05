@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { signIn } from "next-auth/react";
+import Link from 'next/link';
 
 // Map subdomains to their email domains and display names
 const SUBDOMAIN_CONFIG: Record<string, { emailDomain: string; displayName: string; url: string; active: boolean }> = {
@@ -197,13 +198,18 @@ const Home = () => {
         }),
       });
 
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: 'network error' }));
+        throw new Error(errorData.message || `HTTP error: ${response.status}`);
+      }
+
       const data = await response.json();
 
       if (data.success) {
         setSignupState(prev => ({
           ...prev,
           flow: 'otp-verification',
-          success: data.message,
+          success: 'verification code sent!',
           isLoading: false
         }));
       } else {
@@ -222,9 +228,15 @@ const Home = () => {
         }
       }
     } catch (error) {
+      console.error('Signup error:', error);
+      // Filter out technical MongoDB errors
+      let errorMessage = error instanceof Error ? error.message : 'network error. please try again.';
+      if (errorMessage.includes('EREFUSED') || errorMessage.includes('queryTxt') || errorMessage.includes('mongodb')) {
+        errorMessage = 'service temporarily unavailable. please try again later.';
+      }
       setSignupState(prev => ({
         ...prev,
-        error: 'network error. please try again.',
+        error: errorMessage,
         isLoading: false
       }));
     }
@@ -269,17 +281,15 @@ const Home = () => {
         }));
 
         if (data.shouldSignIn) {
-          setTimeout(async () => {
-            await signIn("credentials", {
-              email: fullEmail,
-              password: signupState.password,
-              redirect: false,
-            });
-          }, 1500);
-
-          setTimeout(() => {
-            window.location.href = '/profile';
-          }, 2000);
+          // Sign in and immediately redirect to onboarding (don't check status)
+          signIn("credentials", {
+            email: fullEmail,
+            password: signupState.password,
+            redirect: false,
+          }).then(() => {
+            // Always go to onboarding after signup
+            window.location.href = '/onboarding';
+          });
         }
       } else {
         setSignupState(prev => ({
@@ -382,8 +392,43 @@ const Home = () => {
           isLoading: false
         }));
 
-        setTimeout(() => {
-          window.location.href = '/profile';
+        // Check onboarding status before redirecting
+        setTimeout(async () => {
+          try {
+            // Check localStorage first (fallback for when MongoDB is unavailable)
+            const storedOnboarding = localStorage.getItem(`onboarding_${fullEmail}`);
+            if (storedOnboarding === 'true') {
+              console.log('[DEV MODE] Found onboarding status in localStorage');
+              window.location.href = '/profile';
+              return;
+            }
+
+            const userResponse = await fetch("/api/user");
+            if (userResponse.ok) {
+              const userData = await userResponse.json();
+              const onboardingCompleted = userData.data?.profile?.onboardingCompleted;
+              
+              if (onboardingCompleted) {
+                // Store in localStorage as backup
+                localStorage.setItem(`onboarding_${fullEmail}`, 'true');
+                window.location.href = '/profile';
+              } else {
+                window.location.href = '/onboarding';
+              }
+            } else {
+              // If we can't check, go to onboarding to be safe
+              window.location.href = '/onboarding';
+            }
+          } catch (error) {
+            // Check localStorage as fallback even on error
+            const storedOnboarding = localStorage.getItem(`onboarding_${fullEmail}`);
+            if (storedOnboarding === 'true') {
+              window.location.href = '/profile';
+              return;
+            }
+            // If error, go to onboarding
+            window.location.href = '/onboarding';
+          }
         }, 1000);
       }
     } catch (error) {
@@ -404,14 +449,18 @@ const Home = () => {
               type="text"
               placeholder="email"
               value={signupState.emailPrefix}
-              onChange={(e) =>
+              onChange={(e) => {
+                const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+                const value = isDev 
+                  ? e.target.value // Allow any input in dev mode
+                  : e.target.value.toLowerCase().replace(/[^a-z0-9]/g, ''); // Restrict in production
                 setSignupState(prev => ({
                   ...prev,
-                  emailPrefix: e.target.value.toLowerCase().replace(/[^a-z0-9]/g, ''),
+                  emailPrefix: value,
                   error: ''
                 }))
-              }
-              className="w-full px-4 py-3 border-2 border-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent text-gray-900 pr-32"
+              }}
+              className="w-full px-4 py-3 border-2 border-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent text-gray-900"
               disabled={signupState.isLoading}
               style={{ fontFamily: 'Merriweather, serif' }}
             />
@@ -469,6 +518,12 @@ const Home = () => {
           >
             {signupState.isLoading ? 'sending...' : 'send verification code'}
           </button>
+          <p className="text-xs text-gray-500 text-center" style={{ fontFamily: 'Merriweather, serif' }}>
+            by continuing, you agree that you are 18+ and agree to our{' '}
+            <Link href="/legal/tos" className="underline hover:text-gray-700">Terms of Service</Link>
+            {' '}and{' '}
+            <Link href="/legal/privacy" className="underline hover:text-gray-700">Privacy Policy</Link>
+          </p>
         </div>
       );
     }
@@ -481,7 +536,7 @@ const Home = () => {
               we sent a 6-digit code to <strong>{getFullEmail(signupState.emailPrefix)}</strong>
             </p>
           </div>
-          <div className="flex justify-center gap-2 mb-4">
+          <div className="w-full flex gap-2 mb-4">
             {[0, 1, 2, 3, 4, 5].map((index) => (
               <input
                 key={index}
@@ -541,7 +596,7 @@ const Home = () => {
                   }
                 }}
                 data-index={index}
-                className="w-12 h-14 text-center text-2xl border-2 border-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent text-gray-900"
+                className="flex-1 min-w-[44px] sm:min-w-[56px] h-14 sm:h-16 text-center text-xl sm:text-2xl border border-gray-300 bg-white/60 shadow-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-700 text-gray-900"
                 disabled={signupState.isLoading}
                 style={{ fontFamily: 'Merriweather, serif' }}
               />
@@ -555,6 +610,12 @@ const Home = () => {
           >
             {signupState.isLoading ? 'creating account...' : 'create account'}
           </button>
+          <p className="text-xs text-gray-500 text-center" style={{ fontFamily: 'Merriweather, serif' }}>
+            by continuing, you agree that you are 18+ and agree to our{' '}
+            <Link href="/legal/tos" className="underline hover:text-gray-700">Terms of Service</Link>
+            {' '}and{' '}
+            <Link href="/legal/privacy" className="underline hover:text-gray-700">Privacy Policy</Link>
+          </p>
           <div className="flex flex-col space-y-2">
             <button
               onClick={handleResendOTP}
@@ -591,16 +652,20 @@ const Home = () => {
         <div className="relative">
           <input
             type="text"
-            placeholder="sunetid"
+            placeholder={typeof window !== 'undefined' && window.location.hostname === 'localhost' ? "email or username" : "sunetid"}
             value={loginState.emailPrefix}
-            onChange={(e) =>
+            onChange={(e) => {
+              const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+              const value = isDev 
+                ? e.target.value // Allow any input in dev mode
+                : e.target.value.toLowerCase().replace(/[^a-z0-9]/g, ''); // Restrict in production
               setLoginState(prev => ({
                 ...prev,
-                emailPrefix: e.target.value.toLowerCase().replace(/[^a-z0-9]/g, ''),
+                emailPrefix: value,
                 error: ''
               }))
-            }
-            className="w-full px-4 py-3 border-2 border-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent text-gray-900 pr-32"
+            }}
+            className="w-full px-4 py-3 border-2 border-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent text-gray-900"
             disabled={loginState.isLoading}
             style={{ fontFamily: 'Merriweather, serif' }}
           />
@@ -856,7 +921,7 @@ const Home = () => {
                 </div>
               )}
               {authMode === 'signup' && signupState.success && (
-                <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm" style={{ fontFamily: 'Merriweather, serif' }}>
+                <div className="mb-4 p-3 bg-green-100 border-2 border-green-300 rounded-lg text-green-800 text-center text-sm font-medium shadow-sm" style={{ fontFamily: 'Merriweather, serif' }}>
                   {signupState.success}
                 </div>
               )}

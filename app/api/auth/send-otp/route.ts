@@ -125,6 +125,7 @@ export async function POST(request: NextRequest) {
       expiresAt,
     };
 
+    // Insert OTP
     await otpCollection.insertOne(otpDoc);
 
     // Send email
