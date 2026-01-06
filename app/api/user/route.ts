@@ -67,7 +67,9 @@ export async function GET() {
             lookingForGender: [],
             lookingForEthnicity: [],
             optInMatching: false,
-            attractiveness: 0
+            attractiveness: 0,
+            onboardingCompleted: false,
+            adjectivePreferences: []
           },
           onboardingCompleted: user.profile?.onboardingCompleted || false,
           adjectivePreferences: user.profile?.adjectivePreferences || [],
@@ -192,7 +194,9 @@ export async function PUT(request: NextRequest) {
       lookingForEthnicity: validData.lookingForEthnicity,
       photo: validData.photo,
       optInMatching: validData.optInMatching,
-      attractiveness: validData.attractiveness
+      attractiveness: validData.attractiveness,
+      onboardingCompleted: validData.onboardingCompleted,
+      adjectivePreferences: validData.adjectivePreferences
     };
 
     // Handle onboarding fields if provided (from JSON requests)

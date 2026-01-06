@@ -6,6 +6,23 @@ export const YEAR_OPTIONS = [
   'freshman', 'sophomore', 'junior', 'senior', 'grad student'
 ] as const;
 
+export const ATTRACTIVENESS_PREFERENCE_OPTIONS = [
+  'cute',
+  'hot',
+  'casual',
+  'refined',
+  'golden retriever',
+  'black cat',
+  'light aesthetic',
+  'dark aesthetic',
+  'polished',
+  'effortless',
+  'minimal',
+  'expressive',
+  'bold',
+  'subtle'
+] as const;
+
 export const ETHNICITY_OPTIONS = [
   'prefer not to answer',
   'african',
@@ -151,6 +168,8 @@ export interface UserProfileData {
   lookingForEthnicity: string[];
   attractiveness: number;
   optInMatching: boolean;
+  onboardingCompleted: boolean;
+  adjectivePreferences: string[];
 }
 
 export interface ProfileImageData {
@@ -342,6 +361,46 @@ export function validateOptInMatching(optInMatching: any): { isValid: boolean; e
   return { isValid: true };
 }
 
+export function validateOnboardingCompleted(onboardingCompleted: any): { isValid: boolean; error?: string } {
+  if (typeof onboardingCompleted !== 'boolean') {
+    // Try to convert string representations
+    if (onboardingCompleted === 'true' || onboardingCompleted === true) {
+      return { isValid: true };
+    }
+    if (onboardingCompleted === 'false' || onboardingCompleted === false) {
+      return { isValid: true };
+    }
+    
+    return { isValid: false, error: 'opt in matching must be a boolean value' };
+  }
+
+  return { isValid: true };
+}
+
+export function validateAttractivenessPreferences(attractivenessPreferences: string[]): { isValid: boolean; error?: string } {
+  if (!attractivenessPreferences || !Array.isArray(attractivenessPreferences)) {
+    return { isValid: false, error: 'looking for ethnicity must be an array' };
+  }
+  
+  // Empty array is valid (means "any ethnicity")
+  if (attractivenessPreferences.length === 0) {
+    return { isValid: true };
+  }
+  
+  // Check if all values are valid
+  for (let i = 0; i < attractivenessPreferences.length; i++) {
+    if (!ATTRACTIVENESS_PREFERENCE_OPTIONS.includes(attractivenessPreferences[i] as any)) {
+      return { isValid: false, error: 'invalid ethnicity preference' };
+    }
+    if(ATTRACTIVENESS_PREFERENCE_OPTIONS.findIndex(attractivenessPreferences[i] as any) != 2*i && 
+       ATTRACTIVENESS_PREFERENCE_OPTIONS.findIndex(attractivenessPreferences[i] as any) != 2*i+1){
+      return { isValid: false, error: 'invalid ethnicity preference' };
+    }
+  }
+  
+  return { isValid: true };
+}
+
 export function validateProfileImage(file: File | null): { isValid: boolean; error?: string; validFile?: File } {
   if (!file) {
     return { isValid: true }; // Image is optional
@@ -482,7 +541,9 @@ export function validateProfileData(data: any): { isValid: boolean; error?: stri
     lookingForGender: data.lookingForGender || [],
     lookingForEthnicity: data.lookingForEthnicity || [],
     attractiveness: typeof data.attractiveness === 'string' ? parseFloat(data.attractiveness) : (data.attractiveness || 0),
-    optInMatching: data.optInMatching === 'true' || data.optInMatching === true
+    optInMatching: data.optInMatching === 'true' || data.optInMatching === true,
+    onboardingCompleted: data.onboardingCompleted === 'true' || data.onboardingCompleted === true,
+    adjectivePreferences: data.adjectivePreferences || []
   };
   
   return { isValid: true, validData };

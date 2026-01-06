@@ -23,6 +23,8 @@ const Profile = () => {
     lookingForEthnicity: string[];
     attractiveness: number;
     optInMatching: boolean;
+    onboardingCompleted: boolean;
+    adjectivePreferences: string[];
   };
 
   type Section = {
@@ -64,7 +66,9 @@ const Profile = () => {
     lookingForGender: [],
     lookingForEthnicity: [],
     attractiveness: 0,
-    optInMatching: false
+    optInMatching: false,
+    onboardingCompleted: false,
+    adjectivePreferences: []
   });
 
   const [editValues, setEditValues] = useState<ProfileData>({
@@ -78,7 +82,9 @@ const Profile = () => {
     lookingForGender: [],
     lookingForEthnicity: [],
     attractiveness: 0,
-    optInMatching: false
+    optInMatching: false,
+    onboardingCompleted: false,
+    adjectivePreferences: []
   });
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
 
@@ -195,6 +201,8 @@ const Profile = () => {
             lookingForEthnicity: data.profile.lookingForEthnicity || [],
             attractiveness: data.profile.attractiveness || 0,
             optInMatching: data.profile.optInMatching || false,
+            onboardingCompleted: data.profile.onboardingCompleted || false,
+            adjectivePreferences: data.profile.adjectivePreferences || []
           };
           setProfile(profileData);
         }
@@ -247,7 +255,9 @@ const Profile = () => {
       lookingForGender: [...profile.lookingForGender],
       lookingForEthnicity: [...profile.lookingForEthnicity],
       attractiveness: profile.attractiveness,
-      optInMatching: profile.optInMatching
+      optInMatching: profile.optInMatching,
+      onboardingCompleted: profile.onboardingCompleted,
+      adjectivePreferences: profile.adjectivePreferences
     });
 
     setProfileImageFile(null);
@@ -299,6 +309,8 @@ const Profile = () => {
         formData.append('optInMatching', editValues.optInMatching.toString());
         formData.append('photo', profileImageFile);
         formData.append('attractiveness', editValues.attractiveness.toString());
+        formData.append('onboardingCompleted', editValues.onboardingCompleted.toString());
+        formData.append('adjectivePreferences', JSON.stringify(editValues.adjectivePreferences));
 
         response = await fetch("/api/user", {
           method: "PUT",
@@ -319,7 +331,9 @@ const Profile = () => {
             lookingForEthnicity: editValues.lookingForEthnicity,
             optInMatching: editValues.optInMatching,
             photo: editValues.photo,
-            attractiveness: editValues.attractiveness
+            attractiveness: editValues.attractiveness,
+            onboardingCompleted: editValues.onboardingCompleted,
+            adjectivePreferences: editValues.adjectivePreferences
           }),
         });
       }
@@ -343,7 +357,9 @@ const Profile = () => {
             lookingForGender: result.data.profile.lookingForGender || [],
             lookingForEthnicity: result.data.profile.lookingForEthnicity || [],
             attractiveness: result.data.profile.attractiveness || 0,
-            optInMatching: result.data.profile.optInMatching || false
+            optInMatching: result.data.profile.optInMatching || false,
+            onboardingCompleted: result.data.profile.onboardingCompleted || false,
+            adjectivePreferences: result.data.profile.adjectivePreferences || []
           });
         }
 

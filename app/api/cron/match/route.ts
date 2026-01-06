@@ -21,6 +21,8 @@ interface User {
     optInMatching: boolean;
     lookingForGender?: string[];
     lookingForEthnicity?: string[];
+    onboardingCompleted?: boolean;
+    adjectivePreferences?: string[];
   };
   createdAt: Date;
 }
@@ -131,6 +133,8 @@ export async function GET(request: NextRequest) {
         'profile.lookingForGender': 1,
         'profile.lookingForEthnicity': 1,
         'profile.optInMatching': 1,
+        'profile.onboardingcompleted': 1,
+        'profile.adjectivePreferences': 1,
         createdAt: 1
       },
     }).toArray() as unknown as User[];
