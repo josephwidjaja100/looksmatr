@@ -23,6 +23,7 @@ const Home = () => {
   const [selectedCollege, setSelectedCollege] = useState('');
   const [showAuth, setShowAuth] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [buttonWidth, setButtonWidth] = useState(0);
   const [authMode, setAuthMode] = useState<'signup' | 'login'>('signup');
   const [signupState, setSignupState] = useState({
     emailPrefix: '',
@@ -43,6 +44,7 @@ const Home = () => {
   });
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     // Get the current hostname
@@ -81,6 +83,12 @@ const Home = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
+  }, [showDropdown]);
+
+  useEffect(() => {
+    if (buttonRef.current) {
+      setButtonWidth(buttonRef.current.offsetWidth);
+    }
   }, [showDropdown]);
 
   // Handle college selection from dropdown
@@ -809,6 +817,7 @@ const Home = () => {
 
             <div ref={dropdownRef} className="relative flex flex-col items-center sm:items-start">
               <button
+                ref={buttonRef} 
                 onClick={(e) => {
                   setShowDropdown(!showDropdown);
                 }}
@@ -832,10 +841,7 @@ const Home = () => {
                   className="absolute top-full mt-1 bg-white border-2 border-gray-400/40 rounded-lg shadow-xl max-h-60 overflow-y-auto z-50"
                   style={{ 
                     left: '-1px',
-                    width: dropdownRef.current?.querySelector('button')?.offsetWidth 
-                      ? `${dropdownRef.current.querySelector('button')?.offsetWidth}px` 
-                      : 'auto',
-                    minWidth: 'max-content'
+                    width: `${buttonWidth}px`,
                   }}
                 >
                   {getCollegeOptions().map((option) => (
