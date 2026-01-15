@@ -9,6 +9,7 @@ const SUBDOMAIN_CONFIG: Record<string, { emailDomain: string; displayName: strin
   'winchester': { emailDomain: 'winchesterthurston.org', displayName: 'Winchester Thurston', url: 'https://winchester.likely.one', active: true},
   'stanford': { emailDomain: 'stanford.edu', displayName: 'Stanford', url: 'https://stanford.likely.one', active: true },
   'psu': { emailDomain: 'psu.edu', displayName: 'Penn State', url: 'https://psu.likely.one', active: true },
+  'berkeley': { emailDomain: 'berkeley.edu', displayName: 'Berkeley', url: 'https://berkeley.likely.one', active: true },
 };
 
 // Get list of college options for dropdown
