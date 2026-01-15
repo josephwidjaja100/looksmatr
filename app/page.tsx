@@ -545,11 +545,13 @@ const Home = () => {
               we sent a 6-digit code to <strong>{getFullEmail(signupState.emailPrefix)}</strong>
             </p>
           </div>
-          <div className="w-full flex gap-2 mb-4">
+          <div className="w-full flex gap-1.5 sm:gap-2 mb-4">
             {[0, 1, 2, 3, 4, 5].map((index) => (
               <input
                 key={index}
                 type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 maxLength={1}
                 value={signupState.otp[index] || ''}
                 onChange={(e) => {
@@ -605,8 +607,7 @@ const Home = () => {
                   }
                 }}
                 data-index={index}
-                className="flex-1 min-w-[44px] sm:min-w-[56px] h-14 sm:h-16 text-center text-xl sm:text-2xl border border-gray-300 bg-white/60 shadow-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-700 text-gray-900"
-                disabled={signupState.isLoading}
+                className="flex-1 min-w-0 w-0 h-14 sm:h-16 text-center text-xl sm:text-2xl border border-gray-300 bg-white/60 shadow-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-700 text-gray-900"                disabled={signupState.isLoading}
                 style={{ fontFamily: 'Merriweather, serif' }}
               />
             ))}

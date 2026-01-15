@@ -673,7 +673,7 @@ const Profile = () => {
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/jpg,image/png"
                   onChange={handlePhotoUpload}
                   className="hidden"
                   id="photo-upload"
@@ -763,6 +763,7 @@ const Profile = () => {
           href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" 
           rel="stylesheet" 
         />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <style>{`
           @keyframes gradientShift {
             0% { background-position: 0% 50%; }
