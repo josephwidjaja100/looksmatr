@@ -465,69 +465,85 @@ export function validateProfileImage(file: File | null): { isValid: boolean; err
   return { isValid: true, validFile: file };
 }
 
-export function validateProfileData(data: any): { isValid: boolean; error?: string; validData?: UserProfileData } {
+export function validateProfileData(data: any, section?: string | null): { isValid: boolean; error?: string; validData?: UserProfileData } {
   if (!data || typeof data !== 'object') {
     return { isValid: false, error: 'invalid profile data' };
   }
   
-  // Validate name (required)
-  const nameValidation = validateName(data.name);
-  if (!nameValidation.isValid) {
-    return nameValidation;
-  }
-  
-  // Validate year (required)
-  const yearValidation = validateYear(data.year);
-  if (!yearValidation.isValid) {
-    return yearValidation;
-  }
-  
-  // Validate major (required)
-  const majorValidation = validateMajor(data.major);
-  if (!majorValidation.isValid) {
-    return majorValidation;
-  }
-  
-  // Validate instagram (optional)
-  const instagramValidation = validateInstagram(data.instagram || '');
-  if (!instagramValidation.isValid) {
-    return instagramValidation;
-  }
-  
-  // Validate gender (required)
-  const genderValidation = validateGender(data.gender);
-  if (!genderValidation.isValid) {
-    return genderValidation;
-  }
-  
-  // Validate ethnicity (required)
-  const ethnicityValidation = validateEthnicity(data.ethnicity);
-  if (!ethnicityValidation.isValid) {
-    return ethnicityValidation;
-  }
-  
-  // Validate looking for gender (optional, but must be valid array)
-  const lookingForGenderValidation = validateLookingForGender(data.lookingForGender || []);
-  if (!lookingForGenderValidation.isValid) {
-    return lookingForGenderValidation;
-  }
-  
-  // Validate looking for ethnicity (optional, but must be valid array)
-  const lookingForEthnicityValidation = validateLookingForEthnicity(data.lookingForEthnicity || []);
-  if (!lookingForEthnicityValidation.isValid) {
-    return lookingForEthnicityValidation;
-  }
+  // If a specific section is being edited, only validate that section
+  if (section) {
+    switch (section) {
+      case 'basic':
+        const nameValidation = validateName(data.name);
+        if (!nameValidation.isValid) return nameValidation;
+        
+        const yearValidation = validateYear(data.year);
+        if (!yearValidation.isValid) return yearValidation;
+        
+        const majorValidation = validateMajor(data.major);
+        if (!majorValidation.isValid) return majorValidation;
+        
+        const genderValidation = validateGender(data.gender);
+        if (!genderValidation.isValid) return genderValidation;
+        
+        const ethnicityValidation = validateEthnicity(data.ethnicity);
+        if (!ethnicityValidation.isValid) return ethnicityValidation;
+        break;
+        
+      case 'instagram':
+        const instagramValidation = validateInstagram(data.instagram || '');
+        if (!instagramValidation.isValid) return instagramValidation;
+        break;
+        
+      case 'lookingFor':
+        const lookingForGenderValidation = validateLookingForGender(data.lookingForGender || []);
+        if (!lookingForGenderValidation.isValid) return lookingForGenderValidation;
+        
+        const lookingForEthnicityValidation = validateLookingForEthnicity(data.lookingForEthnicity || []);
+        if (!lookingForEthnicityValidation.isValid) return lookingForEthnicityValidation;
+        break;
+        
+      case 'photo':
+        // Photo validation happens separately in validateProfileImage
+        break;
+        
+      case 'optInMatching':
+        // For opt-in, validate everything (handled in page.tsx before calling this)
+        const optInValidation = validateOptInMatching(data.optInMatching ?? false);
+        if (!optInValidation.isValid) return optInValidation;
+        break;
+    }
+  } else {
+    // Original full validation logic when no section specified
+    const nameValidation = validateName(data.name);
+    if (!nameValidation.isValid) return nameValidation;
+    
+    const yearValidation = validateYear(data.year);
+    if (!yearValidation.isValid) return yearValidation;
+    
+    const majorValidation = validateMajor(data.major);
+    if (!majorValidation.isValid) return majorValidation;
+    
+    const instagramValidation = validateInstagram(data.instagram || '');
+    if (!instagramValidation.isValid) return instagramValidation;
+    
+    const genderValidation = validateGender(data.gender);
+    if (!genderValidation.isValid) return genderValidation;
+    
+    const ethnicityValidation = validateEthnicity(data.ethnicity);
+    if (!ethnicityValidation.isValid) return ethnicityValidation;
+    
+    const lookingForGenderValidation = validateLookingForGender(data.lookingForGender || []);
+    if (!lookingForGenderValidation.isValid) return lookingForGenderValidation;
+    
+    const lookingForEthnicityValidation = validateLookingForEthnicity(data.lookingForEthnicity || []);
+    if (!lookingForEthnicityValidation.isValid) return lookingForEthnicityValidation;
 
-  // Validate attractiveness (required)
-  const attractivenessValidation = validateAttractiveness(data.attractiveness ?? 0);
-  if (!attractivenessValidation.isValid) {
-    return attractivenessValidation;
-  }
+    const attractivenessValidation = validateAttractiveness(data.attractiveness ?? 0);
+    if (!attractivenessValidation.isValid) return attractivenessValidation;
 
-  // Validate opt in matching (required)
-  const optInMatchingValidation = validateOptInMatching(data.optInMatching ?? false);
-  if (!optInMatchingValidation.isValid) {
-    return optInMatchingValidation;
+    const optInMatchingValidation = validateOptInMatching(data.optInMatching ?? false);
+    if (!optInMatchingValidation.isValid) return optInMatchingValidation;
   }
   
   const validData: UserProfileData = {
@@ -551,21 +567,22 @@ export function validateProfileData(data: any): { isValid: boolean; error?: stri
 
 export function validateProfileDataWithImage(
   data: any, 
-  imageFile?: File | null
+  imageFile?: File | null,
+  section?: string | null
 ): { 
   isValid: boolean; 
   error?: string; 
   validData?: UserProfileData;
   validImage?: File;
 } {
-  // First validate the profile data
-  const profileValidation = validateProfileData(data);
+  // First validate the profile data with section awareness
+  const profileValidation = validateProfileData(data, section);
   if (!profileValidation.isValid) {
     return profileValidation;
   }
 
-  // Then validate the image if provided
-  if (imageFile) {
+  // Then validate the image if provided and we're editing the photo section
+  if (imageFile && (section === 'photo' || !section)) {
     const imageValidation = validateProfileImage(imageFile);
     if (!imageValidation.isValid) {
       return { isValid: false, error: imageValidation.error };

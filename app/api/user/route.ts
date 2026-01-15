@@ -99,6 +99,7 @@ export async function PUT(request: NextRequest) {
     const contentType = request.headers.get('content-type');
     let requestData: any;
     let imageFile: File | null = null;
+    let editingSection: string | null = null; // Add this
 
     if (contentType?.includes('multipart/form-data')) {
       // Handle FormData for image uploads
@@ -119,6 +120,7 @@ export async function PUT(request: NextRequest) {
         adjectivePreferences: JSON.parse(formData.get('adjectivePreferences') as string || '[]'),
       };
 
+      editingSection = formData.get('editingSection') as string | null; // Add this
       imageFile = formData.get('photo') as File;
 
       // Handle case where no file is selected (FormData returns empty File)
@@ -128,10 +130,11 @@ export async function PUT(request: NextRequest) {
     } else {
       // Handle JSON for regular profile updates
       requestData = await request.json();
+      editingSection = requestData.editingSection || null; // Add this
     }
 
     const isOnboardingOnly = requestData.onboardingCompleted !== undefined && 
-                             Object.keys(requestData).filter(k => k !== 'onboardingCompleted' && k !== 'adjectivePreferences').length === 0;
+                             Object.keys(requestData).filter(k => k !== 'onboardingCompleted' && k !== 'adjectivePreferences' && k !== 'editingSection').length === 0;
 
     // For onboarding-only requests, skip validation
     if (isOnboardingOnly) {
@@ -163,8 +166,8 @@ export async function PUT(request: NextRequest) {
       });
     }
 
-    // For regular profile updates, do validation
-    const validation = validateProfileDataWithImage(requestData, imageFile);
+    // For regular profile updates, do section-specific validation
+    const validation = validateProfileDataWithImage(requestData, imageFile, editingSection);
     if (!validation.isValid) {
       console.error('validation failed:', validation.error);
       console.error('request data:', requestData);

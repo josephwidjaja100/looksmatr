@@ -270,23 +270,27 @@ const Profile = () => {
       return;
     }
 
-    const validation = validateProfileDataWithImage(editValues, profileImageFile);
-    if (!validation.isValid) {
-      toast.error(validation.error + (editingSection=="basic" ? "" : " before submitting " + editingSection));
-      return;
+    // Only validate all sections if opting in to matching
+    if (editingSection === 'optInMatching' && editValues.optInMatching) {
+      if (!areRequiredSectionsFilled(editValues)) {
+        const missingSections = [];
+        if (!editValues.name) missingSections.push('name');
+        if (!editValues.year) missingSections.push('year');
+        if (!editValues.major) missingSections.push('major');
+        if (!editValues.gender) missingSections.push('gender');
+        if (editValues.ethnicity.length === 0) missingSections.push('ethnicity');
+        if (!editValues.instagram) missingSections.push('instagram');
+        if (!editValues.photo && !profileImageFile) missingSections.push('photo');
+        
+        toast.error(`cannot opt in to matching. please fill: ${missingSections.join(', ')}`);
+        return;
+      }
     }
 
-    if (editValues.optInMatching && !areRequiredSectionsFilled(editValues)) {
-      const missingSections = [];
-      if (!editValues.name) missingSections.push('name');
-      if (!editValues.year) missingSections.push('year');
-      if (!editValues.major) missingSections.push('major');
-      if (!editValues.gender) missingSections.push('gender');
-      if (editValues.ethnicity.length === 0) missingSections.push('ethnicity');
-      if (!editValues.instagram) missingSections.push('instagram');
-      if (!editValues.photo && !profileImageFile) missingSections.push('photo');
-      
-      toast.error(`cannot opt in to matching. please fill: ${missingSections.join(', ')}`);
+    // For other sections, only validate the current section
+    const validation = validateProfileDataWithImage(editValues, profileImageFile, editingSection);
+    if (!validation.isValid) {
+      toast.error(validation.error);
       return;
     }
 
@@ -311,6 +315,7 @@ const Profile = () => {
         formData.append('attractiveness', editValues.attractiveness.toString());
         formData.append('onboardingCompleted', editValues.onboardingCompleted.toString());
         formData.append('adjectivePreferences', JSON.stringify(editValues.adjectivePreferences));
+        formData.append('editingSection', editingSection || '');
 
         response = await fetch("/api/user", {
           method: "PUT",
@@ -333,7 +338,8 @@ const Profile = () => {
             photo: editValues.photo,
             attractiveness: editValues.attractiveness,
             onboardingCompleted: editValues.onboardingCompleted,
-            adjectivePreferences: editValues.adjectivePreferences
+            adjectivePreferences: editValues.adjectivePreferences,
+            editingSection: editingSection
           }),
         });
       }
@@ -434,7 +440,15 @@ const Profile = () => {
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file) {
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error('please upload a jpeg or png image');
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         const result = reader.result as string | null;
