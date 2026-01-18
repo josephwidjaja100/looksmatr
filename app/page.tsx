@@ -730,142 +730,233 @@ const Home = () => {
         href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" 
         rel="stylesheet" 
       />
-      <div 
-          className="absolute inset-0 flex flex-col items-center justify-center px-4"
-          style={{
-            filter: showAuth ? 'blur(8px)' : 'none',
-            transition: 'filter 0.3s ease'
-          }}
-        ></div>
-      <div 
-        className="absolute inset-0 flex flex-col items-center justify-center px-4 overflow-hidden bg-gradient-animated" 
-        style={{ paddingTop: 'max(0px, env(safe-area-inset-top))', 
-                paddingBottom: 'max(0px, env(safe-area-inset-bottom))', 
-                paddingLeft: 'max(0px, env(safe-area-inset-left))', 
-                paddingRight: 'max(0px, env(safe-area-inset-right))', 
-                position: 'fixed', 
-                top: 0, left: 0, right: 0, bottom: 0 }}>
-        {bubbles.map((bubble, i) => {
-          const messageIndex = i % messageTexts.length;
-          
-          return (
-            <div
-              key={bubble.id}
-              className={`absolute animate-float ${i >= 4 ? 'hidden md:block' : ''}`}
-              style={{
-                left: bubble.left,
-                top: bubble.top,
-                animationDelay: bubble.delay,
-                animationDuration: '4s',
-                fontFamily: 'Merriweather, serif',
-                maxWidth: '250px',
-                filter: showAuth ? 'blur(8px)' : 'none',
-                transition: 'filter 0.3s ease',
-                width: '250px'
-              }}
-            >
-              <div className="relative backdrop-blur-md bg-white/20 shadow-lg p-4" style={{ borderRadius: '24px 24px 24px 0' }}>
-                <p className="text-gray-600 text-xs opacity-70 font-medium">
-                  {messageTexts[messageIndex]}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-
+      <div className="min-h-screen">
+        {/* Hero Section */}
         <div 
-          className="absolute inset-0 flex flex-col items-center justify-center"
-          style={{
-            filter: showAuth ? 'blur(8px)' : 'none',
-            transition: 'filter 0.3s ease',
-            paddingTop: 'max(0px, env(safe-area-inset-top))',
-            paddingBottom: 'max(0px, env(safe-area-inset-bottom))',
-            paddingLeft: 'max(0px, env(safe-area-inset-left))',
-            paddingRight: 'max(0px, env(safe-area-inset-right))'
-          }}
-        >
-          <h1 
-            className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-800 tracking-tight whitespace-nowrap"
-            style={{ fontFamily: 'Merriweather, serif' }}
+          className="relative h-screen flex flex-col items-center justify-center px-4 overflow-hidden bg-gradient-animated" 
+          style={{ paddingTop: 'max(0px, env(safe-area-inset-top))', 
+                  paddingBottom: 'max(0px, env(safe-area-inset-bottom))', 
+                  paddingLeft: 'max(0px, env(safe-area-inset-left))', 
+                  paddingRight: 'max(0px, env(safe-area-inset-right))' }}>
+          {bubbles.map((bubble, i) => {
+            const messageIndex = i % messageTexts.length;
+            
+            return (
+              <div
+                key={bubble.id}
+                className={`absolute animate-float ${i >= 4 ? 'hidden md:block' : ''}`}
+                style={{
+                  left: bubble.left,
+                  top: bubble.top,
+                  animationDelay: bubble.delay,
+                  animationDuration: '4s',
+                  fontFamily: 'Merriweather, serif',
+                  maxWidth: '250px',
+                  filter: showAuth ? 'blur(8px)' : 'none',
+                  transition: 'filter 0.3s ease',
+                  width: '250px'
+                }}
+              >
+                <div className="relative backdrop-blur-md bg-white/20 shadow-lg p-4" style={{ borderRadius: '24px 24px 24px 0' }}>
+                  <p className="text-gray-600 text-xs opacity-70 font-medium">
+                    {messageTexts[messageIndex]}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+
+          <div 
+            className="absolute inset-0 flex flex-col items-center justify-center"
+            style={{
+              filter: showAuth ? 'blur(8px)' : 'none',
+              transition: 'filter 0.3s ease',
+              paddingTop: 'max(0px, env(safe-area-inset-top))',
+              paddingBottom: 'max(0px, env(safe-area-inset-bottom))',
+              paddingLeft: 'max(0px, env(safe-area-inset-left))',
+              paddingRight: 'max(0px, env(safe-area-inset-right))'
+            }}
           >
-            looks matter.
-          </h1>
-          <h2 
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-700 tracking-tight mt-2"
-            style={{ fontFamily: 'Merriweather, serif' }}
-          >
-            for {collegeName}
-          </h2>
-          <p 
-            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mt-2 max-w-4xl text-center px-4"
-            style={{ fontFamily: 'Merriweather, serif' }}
-          >
-            get a date who's actually as attractive as you
-          </p>
-          
-          <div className="mt-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-            <button
-              onClick={handleGetMatched}
-              disabled={!isActive}
-              className={`px-8 py-4 font-bold rounded-full transition-all duration-300 shadow-lg ${
-                isActive 
-                  ? 'bg-gray-800 text-white hover:bg-gray-700 hover:shadow-xl hover:scale-105 cursor-pointer' 
-                  : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-              }`}
+            <h1 
+              className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-800 tracking-tight whitespace-nowrap"
               style={{ fontFamily: 'Merriweather, serif' }}
             >
-              {isActive ? 'get matched' : 'coming soon...'}
-            </button>
-
-            <div ref={dropdownRef} className="relative flex flex-col items-center sm:items-start">
+              looks matter.
+            </h1>
+            <h2 
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-700 tracking-tight mt-2"
+              style={{ fontFamily: 'Merriweather, serif' }}
+            >
+              for {collegeName}
+            </h2>
+            <p 
+              className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mt-2 max-w-4xl text-center px-4"
+              style={{ fontFamily: 'Merriweather, serif' }}
+            >
+              get a date who's actually as attractive as you
+            </p>
+            
+            <div className="mt-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
               <button
-                ref={buttonRef} 
-                onClick={(e) => {
-                  setShowDropdown(!showDropdown);
-                }}
-                className="text-gray-800 font-bold underline hover:text-gray-600 transition-colors flex items-center gap-2 relative z-10"
-                style={{ fontFamily: 'Merriweather, serif', fontSize: '1rem' }}
+                onClick={handleGetMatched}
+                disabled={!isActive}
+                className={`px-8 py-4 font-bold rounded-full transition-all duration-300 shadow-lg ${
+                  isActive 
+                    ? 'bg-gray-800 text-white hover:bg-gray-700 hover:shadow-xl hover:scale-105 cursor-pointer' 
+                    : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                }`}
+                style={{ fontFamily: 'Merriweather, serif' }}
               >
-                not from {collegeName}?
-                <svg
-                  className={`w-4 h-4 transition-transform duration-300 ${showDropdown ? 'rotate-180' : ''}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+                {isActive ? 'get matched' : 'coming soon...'}
               </button>
-              
-              {showDropdown && (
-                <div 
-                  onClick={(e) => e.stopPropagation()}
-                  className="absolute top-full mt-1 bg-white border-2 border-gray-400/40 rounded-lg shadow-xl max-h-60 overflow-y-auto z-50"
-                  style={{ 
-                    left: '-1px',
-                    width: `${buttonWidth}px`,
+
+              <div ref={dropdownRef} className="relative flex flex-col items-center sm:items-start">
+                <button
+                  ref={buttonRef} 
+                  onClick={(e) => {
+                    setShowDropdown(!showDropdown);
                   }}
+                  className="text-gray-800 font-bold underline hover:text-gray-600 transition-colors flex items-center gap-2 relative z-10"
+                  style={{ fontFamily: 'Merriweather, serif', fontSize: '1rem' }}
                 >
-                  {getCollegeOptions().map((option) => (
-                    <button
-                      key={option}
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCollegeChange(option);
-                      }}
-                      className="w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors text-sm text-gray-700 first:rounded-t-lg last:rounded-b-lg whitespace-nowrap"
-                      style={{ fontFamily: 'Merriweather, serif' }}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-              )}
+                  not from {collegeName}?
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-300 ${showDropdown ? 'rotate-180' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                
+                {showDropdown && (
+                  <div 
+                    onClick={(e) => e.stopPropagation()}
+                    className="absolute top-full mt-1 bg-white border-2 border-gray-400/40 rounded-lg shadow-xl max-h-60 overflow-y-auto z-50"
+                    style={{ 
+                      left: '-1px',
+                      width: `${buttonWidth}px`,
+                    }}
+                  >
+                    {getCollegeOptions().map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCollegeChange(option);
+                        }}
+                        className="w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors text-sm text-gray-700 first:rounded-t-lg last:rounded-b-lg whitespace-nowrap"
+                        style={{ fontFamily: 'Merriweather, serif' }}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
+        {/* How It Works Section */}
+        <section className="py-16 px-4 bg-gradient-animated">
+          <div className="max-w-6xl mx-auto">
+            <div className="backdrop-blur-md bg-white/40 rounded-3xl border border-white/50 shadow-onboarding p-8 md:p-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12" style={{ fontFamily: 'Merriweather, serif' }}>
+                how it works
+              </h2>
+              
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-white font-bold text-xl" style={{ fontFamily: 'Merriweather, serif' }}>1</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>create your profile</h3>
+                  <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
+                    tell us about yourself, upload photos, and set your preferences for the perfect match
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-white font-bold text-xl" style={{ fontFamily: 'Merriweather, serif' }}>2</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>get matched</h3>
+                  <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
+                    our algorithm finds you someone visually compatible based on your profile and preferences
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-white font-bold text-xl" style={{ fontFamily: 'Merriweather, serif' }}>3</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>go on a date</h3>
+                  <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
+                    we give you their contact info and let you figure out the rest - meet up and have fun
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-16 px-4 bg-gradient-animated">
+          <div className="max-w-4xl mx-auto">
+            <div className="backdrop-blur-md bg-white/40 rounded-3xl border border-white/50 shadow-onboarding p-8 md:p-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12" style={{ fontFamily: 'Merriweather, serif' }}>
+                frequently asked questions
+              </h2>
+              
+              <div className="space-y-6">
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-lg font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>
+                    how does the matching work?
+                  </h3>
+                  <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
+                    our algorithm considers your photos, preferences, and profile information to find someone 
+                    visually compatible who shares your interests and values.
+                  </p>
+                </div>
+                
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-lg font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>
+                    is this only for {collegeName} students?
+                  </h3>
+                  <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
+                    yes, we focus on connecting students within the same college community for better compatibility 
+                    and easier meetups.
+                  </p>
+                </div>
+                
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-lg font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>
+                    what if i don't get matched?
+                  </h3>
+                  <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
+                    don't worry! we continuously work to improve matches. you can update your profile or preferences 
+                    to increase your chances.
+                  </p>
+                </div>
+                
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-lg font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>
+                    is my information safe?
+                  </h3>
+                  <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
+                    absolutely. we use your school email for verification and only share contact information 
+                    after mutual matching. your privacy is our priority.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Auth Modal */}
         {showAuth && (
           <div className="fixed inset-0 flex items-center justify-center z-50 p-4" style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))', paddingBottom: 'max(1rem, env(safe-area-inset-bottom))', paddingLeft: 'max(1rem, env(safe-area-inset-left))', paddingRight: 'max(1rem, env(safe-area-inset-right))' }}>
             <div 
@@ -979,6 +1070,18 @@ const Home = () => {
             background: linear-gradient(135deg, #dbeafe, #e9d5ff, #fae8ff, #ddd6fe, #bfdbfe);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
+          }
+          
+          .shadow-onboarding {
+            box-shadow: 0 0 15px rgba(196, 181, 253, 0.15);
+          }
+          
+          .shadow-onboarding-hover {
+            box-shadow: 0 0 25px rgba(196, 181, 253, 0.25), 0 0 40px rgba(221, 214, 254, 0.15);
+          }
+          
+          .shadow-onboarding-hover-bright {
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.6), 0 0 50px rgba(255, 255, 255, 0.4), 0 0 70px rgba(255, 255, 255, 0.2);
           }
         `}</style>
       </div>
