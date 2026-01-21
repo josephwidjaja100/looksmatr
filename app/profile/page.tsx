@@ -374,7 +374,7 @@ const Profile = () => {
         
         try {
           const timeoutPromise = new Promise<Response>((_, reject) => 
-            setTimeout(() => reject(new Error('timeout')), 3000)
+            setTimeout(() => reject(new Error('timeout')), 2000)
           );
           
           const analyzePromise = fetch("/api/analyze", {

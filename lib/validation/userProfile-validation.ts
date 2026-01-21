@@ -18,9 +18,7 @@ export const ATTRACTIVENESS_PREFERENCE_OPTIONS = [
   'polished',
   'effortless',
   'minimal',
-  'expressive',
-  'bold',
-  'subtle'
+  'expressive'
 ] as const;
 
 export const ETHNICITY_OPTIONS = [
