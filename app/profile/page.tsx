@@ -176,7 +176,8 @@ const Profile = () => {
         const response = await fetch("/api/user");
 
         if (!response.ok) {
-          throw new Error("failed to fetch user data");
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || "failed to fetch user data");
         }
 
         const result = await response.json();
@@ -205,11 +206,13 @@ const Profile = () => {
             adjectivePreferences: data.profile.adjectivePreferences || []
           };
           setProfile(profileData);
+          setDataLoaded(true);
         }
-        setDataLoaded(true);
       } catch (error) {
         console.error("failed to load user data:", error);
-        toast.error("failed to load profile data");
+        if (status === "authenticated") {
+          toast.error("failed to load profile data");
+        }
       } finally {
         setLoading(false);
       }
