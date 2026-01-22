@@ -25,6 +25,7 @@ const Home = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [buttonWidth, setButtonWidth] = useState(0);
+  const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
   const [authMode, setAuthMode] = useState<'signup' | 'login'>('signup');
   const [signupState, setSignupState] = useState({
     emailPrefix: '',
@@ -116,6 +117,7 @@ const Home = () => {
     { id: 5, left: '70%', top: '70%', delay: '1.5s' },
     { id: 6, left: '80%', top: '15%', delay: '1.8s' },
     { id: 7, left: '75%', top: '40%', delay: '2.1s' },
+    { id: 8, left: '60%', top: '10%', delay: '2.5s' },
   ];
 
   const messageTexts = [
@@ -127,6 +129,7 @@ const Home = () => {
     "i cant believe i have to sit through an hour with this girl",
     "he literally has a mullet",
     "he's literally the most stereotypical abb looking guy",
+    "he looks like he'd be great just as a frienddd"
   ];
 
   const handleGetMatched = () => {
@@ -730,10 +733,10 @@ const Home = () => {
         href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" 
         rel="stylesheet" 
       />
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-gradient-animated">
         {/* Hero Section */}
         <div 
-          className="relative h-screen flex flex-col items-center justify-center px-4 overflow-hidden bg-gradient-animated" 
+          className="relative h-screen flex flex-col items-center justify-center px-4 overflow-hidden" 
           style={{ paddingTop: 'max(0px, env(safe-area-inset-top))', 
                   paddingBottom: 'max(0px, env(safe-area-inset-bottom))', 
                   paddingLeft: 'max(0px, env(safe-area-inset-left))', 
@@ -861,9 +864,9 @@ const Home = () => {
         </div>
 
         {/* How It Works Section */}
-        <section className="py-16 px-4 bg-gradient-animated">
+        <section className="py-16 px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="backdrop-blur-md bg-white/40 rounded-3xl border border-white/50 shadow-onboarding p-8 md:p-12">
+            <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-8 md:p-12">
               <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12" style={{ fontFamily: 'Merriweather, serif' }}>
                 how it works
               </h2>
@@ -883,9 +886,9 @@ const Home = () => {
                   <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="text-white font-bold text-xl" style={{ fontFamily: 'Merriweather, serif' }}>2</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>get matched</h3>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>opt in</h3>
                   <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
-                    our algorithm finds you someone visually compatible based on your profile and preferences
+                    if you opt in before midnight on thursday, our algorithm will find you a match as attractive as you
                   </p>
                 </div>
                 
@@ -895,7 +898,7 @@ const Home = () => {
                   </div>
                   <h3 className="text-xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>go on a date</h3>
                   <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
-                    we give you their contact info and let you figure out the rest - meet up and have fun
+                    we email you their contact info and let you figure out the rest - meet up and have fun
                   </p>
                 </div>
               </div>
@@ -904,57 +907,208 @@ const Home = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-16 px-4 bg-gradient-animated">
+        <section className="py-16 px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="backdrop-blur-md bg-white/40 rounded-3xl border border-white/50 shadow-onboarding p-8 md:p-12">
+            <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-8 md:p-12">
               <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12" style={{ fontFamily: 'Merriweather, serif' }}>
                 frequently asked questions
               </h2>
               
-              <div className="space-y-6">
-                <div className="border-b border-gray-200 pb-6">
-                  <h3 className="text-lg font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>
-                    how does the matching work?
-                  </h3>
-                  <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
-                    our algorithm considers your photos, preferences, and profile information to find someone 
-                    visually compatible who shares your interests and values.
-                  </p>
-                </div>
-                
-                <div className="border-b border-gray-200 pb-6">
-                  <h3 className="text-lg font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>
-                    is this only for {collegeName} students?
-                  </h3>
-                  <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
-                    yes, we focus on connecting students within the same college community for better compatibility 
-                    and easier meetups.
-                  </p>
-                </div>
-                
-                <div className="border-b border-gray-200 pb-6">
-                  <h3 className="text-lg font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>
-                    what if i don't get matched?
-                  </h3>
-                  <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
-                    don't worry! we continuously work to improve matches. you can update your profile or preferences 
-                    to increase your chances.
-                  </p>
-                </div>
-                
-                <div className="border-b border-gray-200 pb-6">
-                  <h3 className="text-lg font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>
-                    is my information safe?
-                  </h3>
-                  <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
-                    absolutely. we use your school email for verification and only share contact information 
-                    after mutual matching. your privacy is our priority.
-                  </p>
-                </div>
+              <div className="space-y-3">
+                {[
+                  {
+                    question: "how does the matching work?",
+                    answer: "we designed an ai model to quantify just how visually compatible two people are by their photos, and we take in your preferences and other profile information to give you the best possiblie match every week."
+                  },
+                  {
+                    question: `is this only for ${collegeName} students?`,
+                    answer: "yes, we focus on connecting students within the same college community for better compatibility and easier meetups."
+                  },
+                  {
+                    question: "what if i don't get matched?",
+                    answer: "don't worry! we prioritize matching those that did not get matched previously and continuously work to improve match rate. you can also update your profile or preferences to increase your chances."
+                  },
+                  {
+                    question: "is my information safe?",
+                    answer: "absolutely. we use your school email for verification and only share your information to the matches you receive. your privacy is our priority."
+                  },
+                  {
+                    question: "can i not match just for this week?",
+                    answer: "yep! just opt back out in your profile and you won't receive a match until you opt back in."
+                  }
+                ].map((faq, index) => (
+                  <div key={index} className="border border-gray-600 rounded-lg overflow-hidden transition-all duration-200">
+                    <button
+                      onClick={() => setExpandedFAQ(expandedFAQ === index ? null : index)}
+                      className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors text-left"
+                    >
+                      <h3 className="text-lg font-bold text-gray-800" style={{ fontFamily: 'Merriweather, serif' }}>
+                        {faq.question}
+                      </h3>
+                      <svg
+                        className={`w-6 h-6 text-gray-600 transition-transform duration-300 flex-shrink-0 ml-4 ${
+                          expandedFAQ === index ? 'rotate-180' : ''
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 9l6 6 6-6" />
+                      </svg>
+                    </button>
+                    {expandedFAQ === index && (
+                      <div className="px-6 py-4 bg-white/5 border-t border-gray-600">
+                        <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
+                          {faq.answer}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
+
+        {/* CTA Section */}
+        <section className="py-24 px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8" style={{ fontFamily: 'Merriweather, serif' }}>
+              find your likely one?
+            </h2>
+            <button
+              onClick={handleGetMatched}
+              disabled={!isActive}
+              className={`px-10 py-5 font-bold rounded-full transition-all duration-300 shadow-lg text-lg ${
+                isActive 
+                  ? 'bg-gray-800 text-white hover:bg-gray-700 hover:shadow-xl hover:scale-105 cursor-pointer' 
+                  : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+              }`}
+              style={{ fontFamily: 'Merriweather, serif' }}
+            >
+              {isActive ? 'get matched' : 'coming soon...'}
+            </button>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="py-12 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-center md:text-center">
+              {/* Logo Section */}
+              <div className="flex flex-col items-center">
+                <h2 
+                  className="text-4xl font-bold mb-2 text-gray-800"
+                  style={{ fontFamily: 'Merriweather, serif' }}
+                >
+                  likely one.
+                </h2>
+                <p 
+                  className="text-sm text-gray-600"
+                  style={{ fontFamily: 'Merriweather, serif' }}
+                >
+                  © 2026 Likely One
+                </p>
+              </div>
+
+              {/* Company Links */}
+              <div className="flex flex-col items-center">
+                <h3 
+                  className="text-sm font-bold mb-4 uppercase tracking-wide text-gray-600"
+                  style={{ fontFamily: 'Merriweather, serif' }}
+                >
+                  Company
+                </h3>
+                <ul className="space-y-2">
+                  <li>
+                    <Link 
+                      href="/about" 
+                      className="text-gray-700 hover:text-gray-900 transition-colors"
+                      style={{ fontFamily: 'Merriweather, serif' }}
+                    >
+                      About
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      href="/legal/privacy" 
+                      className="text-gray-700 hover:text-gray-900 transition-colors"
+                      style={{ fontFamily: 'Merriweather, serif' }}
+                    >
+                      Privacy
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      href="/legal/tos" 
+                      className="text-gray-700 hover:text-gray-900 transition-colors"
+                      style={{ fontFamily: 'Merriweather, serif' }}
+                    >
+                      Terms of Service
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      href="mailto:contact@likely.one" 
+                      className="text-gray-700 hover:text-gray-900 transition-colors"
+                      style={{ fontFamily: 'Merriweather, serif' }}
+                    >
+                      Contact
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Schools Links */}
+              <div className="flex flex-col items-center">
+                <h3 
+                  className="text-sm font-bold mb-4 uppercase tracking-wide text-gray-600"
+                  style={{ fontFamily: 'Merriweather, serif' }}
+                >
+                  Schools
+                </h3>
+                <ul className="space-y-2">
+                  <li>
+                    <a 
+                      href="https://psu.likely.one" 
+                      className="text-gray-700 hover:text-gray-900 transition-colors"
+                      style={{ fontFamily: 'Merriweather, serif' }}
+                    >
+                      Penn State
+                    </a>
+                  </li>
+                  <li>
+                    <a 
+                      href="https://stanford.likely.one" 
+                      className="text-gray-700 hover:text-gray-900 transition-colors"
+                      style={{ fontFamily: 'Merriweather, serif' }}
+                    >
+                      Stanford
+                    </a>
+                  </li>
+                  <li>
+                    <a 
+                      href="https://berkeley.likely.one" 
+                      className="text-gray-700 hover:text-gray-900 transition-colors"
+                      style={{ fontFamily: 'Merriweather, serif' }}
+                    >
+                      Berkeley
+                    </a>
+                  </li>
+                  <li>
+                    <a 
+                      href="https://winchester.likely.one" 
+                      className="text-gray-700 hover:text-gray-900 transition-colors"
+                      style={{ fontFamily: 'Merriweather, serif' }}
+                    >
+                      Winchester Thurston
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
 
         {/* Auth Modal */}
         {showAuth && (
@@ -1002,7 +1156,7 @@ const Home = () => {
                   className="text-3xl font-bold text-gray-800 mb-2"
                   style={{ fontFamily: 'Merriweather, serif' }}
                 >
-                  {authMode === 'signup' ? 'start connecting' : 'welcome back'}
+                  {authMode === 'signup' ? 'find your match' : 'here again?'}
                 </h2>
                 <p 
                   className="text-gray-600"
