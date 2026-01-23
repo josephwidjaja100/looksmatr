@@ -573,6 +573,30 @@ const Home = () => {
                     }
                   }
                 }}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  const pastedText = e.clipboardData.getData('text');
+                  const digits = pastedText.replace(/\D/g, '').slice(0, 6);
+                  
+                  if (digits.length > 0) {
+                    const newOtp = signupState.otp.split('');
+                    for (let i = 0; i < digits.length && index + i < 6; i++) {
+                      newOtp[index + i] = digits[i];
+                    }
+                    setSignupState(prev => ({
+                      ...prev,
+                      otp: newOtp.join(''),
+                      error: ''
+                    }));
+                    
+                    // Focus the last filled input or the first empty one
+                    const lastFilledIndex = Math.min(index + digits.length - 1, 5);
+                    setTimeout(() => {
+                      const nextInput = document.querySelector(`input[data-index="${lastFilledIndex}"]`) as HTMLInputElement;
+                      if (nextInput) nextInput.focus();
+                    }, 0);
+                  }
+                }}
                 onKeyDown={(e) => {
                   if (e.key === 'Backspace') {
                     if (signupState.otp[index]) {
@@ -610,7 +634,8 @@ const Home = () => {
                   }
                 }}
                 data-index={index}
-                className="flex-1 min-w-0 w-0 h-14 sm:h-16 text-center text-xl sm:text-2xl border border-gray-300 bg-white/60 shadow-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-700 text-gray-900"                disabled={signupState.isLoading}
+                className="flex-1 min-w-0 w-0 h-14 sm:h-16 text-center text-xl sm:text-2xl border border-gray-300 bg-white/60 shadow-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-700 text-gray-900"                
+                disabled={signupState.isLoading}
                 style={{ fontFamily: 'Merriweather, serif' }}
               />
             ))}
@@ -918,7 +943,7 @@ const Home = () => {
                 {[
                   {
                     question: "how does the matching work?",
-                    answer: "we designed an ai model to quantify just how visually compatible two people are by their photos, and we take in your preferences and other profile information to give you the best possiblie match every week."
+                    answer: "we designed an ai model to quantify just how visually compatible two people are by their photos, and we take in your preferences and other profile information to give you the best possible match every week."
                   },
                   {
                     question: `is this only for ${collegeName} students?`,
@@ -1001,7 +1026,7 @@ const Home = () => {
                   className="text-4xl font-bold mb-2 text-gray-800"
                   style={{ fontFamily: 'Merriweather, serif' }}
                 >
-                  likely one.
+                  likely.one
                 </h2>
                 <p 
                   className="text-sm text-gray-600"
