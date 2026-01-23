@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Footer from '@/components/Footer';
 
 export default function About() {
   return (
@@ -16,11 +17,11 @@ export default function About() {
       {/* Scrollable content */}
       <div className="relative min-h-screen">
         {/* Header */}
-        <div className="relative py-10 flex flex-col items-center justify-center overflow-hidden" 
+        <div className="relative py-8 flex flex-col items-center justify-center overflow-hidden" 
           style={{ paddingTop: 'max(5rem, calc(2rem + env(safe-area-inset-top)))', 
                   paddingLeft: 'max(0px, env(safe-area-inset-left))', 
                   paddingRight: 'max(0px, env(safe-area-inset-right))' }}>
-          <div className="max-w-4xl mx-auto px-8">
+          <div className="max-w-4xl mx-auto px-6">
             <h1 
               className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-800 tracking-tight mb-6 text-center"
               style={{ fontFamily: 'Merriweather, serif' }}
@@ -37,7 +38,7 @@ export default function About() {
         </div>
 
         {/* Our Mission */}
-        <section className="py-12 px-6">
+        <section className="py-8 px-6">
           <div className="max-w-4xl mx-auto">
             <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-10 md:p-14">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6" style={{ fontFamily: 'Merriweather, serif' }}>
@@ -57,7 +58,7 @@ export default function About() {
         </section>
 
         {/* How We Do It */}
-        <section className="py-12 px-6">
+        <section className="py-8 px-6">
           <div className="max-w-4xl mx-auto">
             <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-10 md:p-14">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6" style={{ fontFamily: 'Merriweather, serif' }}>
@@ -67,14 +68,14 @@ export default function About() {
                 our algorithm is designed to find matches based on visual compatibility. we analyze profile photos to understand what makes you attractive, then find someone at a similar level of attractiveness to you. we also factor in your gender and ethnicity preferences to make sure the match makes sense.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed" style={{ fontFamily: 'Merriweather, serif' }}>
-                the result? you get matched with someone who's genuinely attractive to you, and who finds you attractive too. it's not perfect, but it's a hell of a lot better than endless swiping.
+                the result? you get matched with someone who's genuinely attractive to you, and who finds you attractive too. it's not perfect, but it's so much better than endless swiping.
               </p>
             </div>
           </div>
         </section>
 
         {/* Privacy & Safety */}
-        <section className="py-12 px-6">
+        <section className="py-8 px-6">
           <div className="max-w-4xl mx-auto">
             <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-10 md:p-14">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6" style={{ fontFamily: 'Merriweather, serif' }}>
@@ -91,7 +92,7 @@ export default function About() {
         </section>
 
         {/* Why Us */}
-        <section className="py-20 px-6">
+        <section className="py-8 px-6">
           <div className="max-w-4xl mx-auto">
             <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-10 md:p-14">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-12" style={{ fontFamily: 'Merriweather, serif' }}>
@@ -101,7 +102,7 @@ export default function About() {
               <div className="grid md:grid-cols-2 gap-8">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-800 mb-3" style={{ fontFamily: 'Merriweather, serif' }}>
-                    college community first
+                    college first
                   </h3>
                   <p className="text-gray-700" style={{ fontFamily: 'Merriweather, serif' }}>
                     we focus on building genuine connections within your college. everyone's verified through their school email, so you know you're matching with real students.
@@ -128,10 +129,10 @@ export default function About() {
 
                 <div>
                   <h3 className="text-2xl font-bold text-gray-800 mb-3" style={{ fontFamily: 'Merriweather, serif' }}>
-                    no games
+                    actually have a chance
                   </h3>
                   <p className="text-gray-700" style={{ fontFamily: 'Merriweather, serif' }}>
-                    we're not trying to keep you on the app forever. we just want to help you find someone worth your time.
+                    we're not trying to keep you single forever. we just want to help you find someone who might actually be interested in you.
                   </p>
                 </div>
               </div>
@@ -140,7 +141,7 @@ export default function About() {
         </section>
 
         {/* CTA */}
-        <section className="py-28 px-6">
+        <section className="py-8 px-6">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8" style={{ fontFamily: 'Merriweather, serif' }}>
               ready to find your likely one?
@@ -156,13 +157,7 @@ export default function About() {
         </section>
 
         {/* Footer */}
-        <footer className="py-12 px-4">
-          <div className="max-w-6xl mx-auto text-center">
-            <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
-              © 2026 Likely One. All rights reserved.
-            </p>
-          </div>
-        </footer>
+        <Footer />
       </div>
 
       <style>{`
