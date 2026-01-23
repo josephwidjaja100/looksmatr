@@ -758,7 +758,11 @@ const Home = () => {
         href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" 
         rel="stylesheet" 
       />
-      <div className="min-h-screen bg-gradient-animated">
+      {/* Fixed gradient background */}
+      <div className="fixed inset-0 bg-gradient-animated -z-10"></div>
+      
+      {/* Scrollable content */}
+      <div className="relative min-h-screen">
         {/* Hero Section */}
         <div 
           className="relative h-screen flex flex-col items-center justify-center px-4 overflow-hidden" 
@@ -1218,52 +1222,52 @@ const Home = () => {
             </div>
           </div>
         )}
-
-        <style>{`
-          @keyframes float {
-            0%, 100% {
-              transform: translateY(0px);
-            }
-            50% {
-              transform: translateY(-20px);
-            }
-          }
-          
-          .animate-float {
-            animation: float 6s ease-in-out infinite;
-          }
-
-          @keyframes gradientShift {
-            0% {
-              background-position: 0% 50%;
-            }
-            50% {
-              background-position: 100% 50%;
-            }
-            100% {
-              background-position: 0% 50%;
-            }
-          }
-          
-          .bg-gradient-animated {
-            background: linear-gradient(135deg, #dbeafe, #e9d5ff, #fae8ff, #ddd6fe, #bfdbfe);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-          }
-          
-          .shadow-onboarding {
-            box-shadow: 0 0 15px rgba(196, 181, 253, 0.15);
-          }
-          
-          .shadow-onboarding-hover {
-            box-shadow: 0 0 25px rgba(196, 181, 253, 0.25), 0 0 40px rgba(221, 214, 254, 0.15);
-          }
-          
-          .shadow-onboarding-hover-bright {
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.6), 0 0 50px rgba(255, 255, 255, 0.4), 0 0 70px rgba(255, 255, 255, 0.2);
-          }
-        `}</style>
       </div>
+
+      <style>{`
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+        }
+        
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+        
+        .bg-gradient-animated {
+          background: linear-gradient(135deg, #dbeafe, #e9d5ff, #fae8ff, #ddd6fe, #bfdbfe);
+          background-size: 400% 400%;
+          animation: gradientShift 15s ease infinite;
+        }
+        
+        .shadow-onboarding {
+          box-shadow: 0 0 15px rgba(196, 181, 253, 0.15);
+        }
+        
+        .shadow-onboarding-hover {
+          box-shadow: 0 0 25px rgba(196, 181, 253, 0.25), 0 0 40px rgba(221, 214, 254, 0.15);
+        }
+        
+        .shadow-onboarding-hover-bright {
+          box-shadow: 0 0 30px rgba(255, 255, 255, 0.6), 0 0 50px rgba(255, 255, 255, 0.4), 0 0 70px rgba(255, 255, 255, 0.2);
+        }
+      `}</style>
     </>
   );
 };
