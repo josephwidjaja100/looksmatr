@@ -45,103 +45,20 @@ export default function About() {
                 our mission
               </h2>
               <p className="text-lg text-gray-700 mb-4 leading-relaxed" style={{ fontFamily: 'Merriweather, serif' }}>
-                we built likely.one to solve a simple problem: finding someone who's attracted to you is hard. dating apps have become a numbers game, and most people end up swiping through hundreds of profiles just to find a handful of matches they're actually interested in.
+                we built likely.one because we truly believe the best relationships stem from not only mutual attraction, but equal attraction. we've heard too many horror stories of relationships getting destroyed because one partner believes they can do better, and we've had enough. we're realistic: we know that romantic feelings always come from some amoutn of physical attraction no matter how much we want to deny it, so why not face it head on. we want to create a strong base of physical attraction for a relationship, and whether your personalities are compatible is up to you to figure out.
               </p>
               <p className="text-lg text-gray-700 mb-4 leading-relaxed" style={{ fontFamily: 'Merriweather, serif' }}>
-                we wanted to create something different. something where your college community comes together once a week to get matched with someone they're genuinely attracted to. no endless swiping, no algorithm trying to keep you on the app—just real matches with real potential.
+                we wanted to create something different. no endless swiping, no algorithm trying to keep you on the app, just real matches you actually have a chance with.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed" style={{ fontFamily: 'Merriweather, serif' }}>
-                likely.one is built for college students, by people who understand the dating scene. we use ai to analyze photos and match people based on genuine visual compatibility, not just metrics. every thursday at midnight, if you opt in, you get an email with your match. what happens next is up to you.
+                likely.one is built for college students, by people who understand the dating scene. we use ai to analyze photos and match people based on genuine visual compatibility, not just arbitrary personality metrics. every thursday at midnight, if you opt in, you get an email with your match. what happens next is up to you.
               </p>
-            </div>
-          </div>
-        </section>
-
-        {/* How We Do It */}
-        <section className="py-8 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-10 md:p-14">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6" style={{ fontFamily: 'Merriweather, serif' }}>
-                how we match
-              </h2>
-              <p className="text-lg text-gray-700 mb-6 leading-relaxed" style={{ fontFamily: 'Merriweather, serif' }}>
-                our algorithm is designed to find matches based on visual compatibility. we analyze profile photos to understand what makes you attractive, then find someone at a similar level of attractiveness to you. we also factor in your gender and ethnicity preferences to make sure the match makes sense.
-              </p>
-              <p className="text-lg text-gray-700 leading-relaxed" style={{ fontFamily: 'Merriweather, serif' }}>
-                the result? you get matched with someone who's genuinely attractive to you, and who finds you attractive too. it's not perfect, but it's so much better than endless swiping.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Privacy & Safety */}
-        <section className="py-8 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-10 md:p-14">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6" style={{ fontFamily: 'Merriweather, serif' }}>
-                privacy & safety
-              </h2>
-              <p className="text-lg text-gray-700 mb-4 leading-relaxed" style={{ fontFamily: 'Merriweather, serif' }}>
-                your information is only shared with your match. we verify you through your school email and never sell or share your data with third parties. your safety and privacy are our top priorities.
-              </p>
-              <p className="text-lg text-gray-700 leading-relaxed" style={{ fontFamily: 'Merriweather, serif' }}>
-                for more details, check out our <Link href="/legal/privacy" className="underline hover:text-gray-900">privacy policy</Link> and <Link href="/legal/tos" className="underline hover:text-gray-900">terms of service</Link>.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Why Us */}
-        <section className="py-8 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-10 md:p-14">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-12" style={{ fontFamily: 'Merriweather, serif' }}>
-                why likely.one
-              </h2>
-              
-              <div className="grid md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-3" style={{ fontFamily: 'Merriweather, serif' }}>
-                    college first
-                  </h3>
-                  <p className="text-gray-700" style={{ fontFamily: 'Merriweather, serif' }}>
-                    we focus on building genuine connections within your college. everyone's verified through their school email, so you know you're matching with real students.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-3" style={{ fontFamily: 'Merriweather, serif' }}>
-                    one match per week
-                  </h3>
-                  <p className="text-gray-700" style={{ fontFamily: 'Merriweather, serif' }}>
-                    no endless swiping. quality over quantity. you get one curated match every thursday, and that's it. way better odds than other apps.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-3" style={{ fontFamily: 'Merriweather, serif' }}>
-                    ai-powered matching
-                  </h3>
-                  <p className="text-gray-700" style={{ fontFamily: 'Merriweather, serif' }}>
-                    our algorithm learns from real data to find matches based on genuine visual compatibility, not just swipe patterns.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-3" style={{ fontFamily: 'Merriweather, serif' }}>
-                    actually have a chance
-                  </h3>
-                  <p className="text-gray-700" style={{ fontFamily: 'Merriweather, serif' }}>
-                    we're not trying to keep you single forever. we just want to help you find someone who might actually be interested in you.
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </section>
 
         {/* CTA */}
-        <section className="py-8 px-6">
+        <section className="py-20 px-6">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8" style={{ fontFamily: 'Merriweather, serif' }}>
               ready to find your likely one?

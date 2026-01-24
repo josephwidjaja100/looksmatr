@@ -1,6 +1,8 @@
 import {
   Html,
   Container,
+  Heading,
+  Section,
   Text,
 } from '@react-email/components';
 
@@ -13,7 +15,7 @@ type MatchingEmailProps = {
   matchGender?: string;
   matchInstagram?: string;
   matchPhoto?: string;
-  attractivenessDiff?: number; // This should be on 100 scale
+  attractivenessDiff?: number;
 };
 
 export default function MatchingEmail({
@@ -25,431 +27,214 @@ export default function MatchingEmail({
   matchGender = 'Male',
   matchInstagram = 'alex_instagram',
   matchPhoto = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80',
-  attractivenessDiff = 5, // Default 5 on 100 scale
+  attractivenessDiff = 5,
 }: MatchingEmailProps) {
-  // Convert from 100 scale to 10 scale
   const diffOn10Scale = (attractivenessDiff / 10).toFixed(1);
   
   return (
     <Html>
-      <Container style={{ maxWidth: '600px', margin: '0 auto', padding: '20px', fontFamily: 'Georgia, "Times New Roman", serif' }}>
-        {/* Chat window container */}
-        <table
-          width="100%"
-          style={{
-            backgroundColor: '#ffffff',
-            border: '2px solid #d1d5db',
-            borderCollapse: 'separate',
-            borderSpacing: '0',
-            margin: '0 auto',
-            borderRadius: '16px',
-          }}
-        >
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet" />
+      </head>
+      <Container style={{ maxWidth: '600px', margin: '0 auto', padding: '40px 20px', fontFamily: 'Merriweather, Georgia, "Times New Roman", serif' }}>
+        
+        {/* Header */}
+        <Section style={{ textAlign: 'center', marginBottom: '20px' }}>
+          <Heading style={{ 
+            fontSize: '32px', 
+            fontWeight: 'bold', 
+            color: '#1f2937',
+            margin: '0 0 8px 0',
+            fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+          }}>
+            likely yours
+          </Heading>
+          <Text style={{
+            fontSize: '16px',
+            color: '#6b7280',
+            margin: '0',
+            fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+          }}>
+            hey {name}, here's your match ❤️
+          </Text>
+        </Section>
+
+        {/* Main content card with photo and overlay */}
+        <Section style={{
+          backgroundColor: '#ffffff',
+          border: '2px solid #e5e7eb',
+          borderRadius: '16px',
+          overflow: 'hidden',
+          marginBottom: '32px'
+        }}>
+          {/* Photo container with overlay */}
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            height: '500px',
+            backgroundImage: `url(${matchPhoto})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}>
+            {/* Gradient fade overlay - Layer 1 (vertical fade) */}
+            <div style={{
+              position: 'absolute',
+              bottom: '0',
+              left: '0',
+              right: '0',
+              height: '100%',
+              background: 'linear-gradient(to top, rgba(219, 234, 254, 0.95) 0%, rgba(219, 234, 254, 0.7) 20%, rgba(219, 234, 254, 0.3) 40%, transparent 60%)',
+            }} />
+            {/* Gradient fade overlay - Layer 2 (diagonal color transition) */}
+            <div style={{
+              position: 'absolute',
+              bottom: '0',
+              left: '0',
+              right: '0',
+              height: '100%',
+              background: 'linear-gradient(135deg, rgba(219, 234, 254, 0.3) 0%, rgba(233, 213, 255, 0.3) 100%)',
+            }} />
             
-          {/* Top bar with window controls */}
-          <tr>
-            <td style={{ backgroundColor: '#e2e8f0', padding: '8px 12px', borderRadius: '14px 14px 0 0' }}>
-              <table width="100%" style={{ borderCollapse: 'collapse' }}>
-                <tr>
-                  <td style={{ width: '10px', paddingRight: '6px' }}>
-                    <div
-                      style={{
-                        width: '10px',
-                        height: '10px',
-                        backgroundColor: '#f87171',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                      }}
-                    />
-                  </td>
-                  <td style={{ width: '10px', paddingRight: '6px' }}>
-                    <div
-                      style={{
-                        width: '10px',
-                        height: '10px',
-                        backgroundColor: '#fbbf24',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                      }}
-                    />
-                  </td>
-                  <td style={{ width: '10px' }}>
-                    <div
-                      style={{
-                        width: '10px',
-                        height: '10px',
-                        backgroundColor: '#4ade80',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                      }}
-                    />
-                  </td>
-                  <td style={{ width: '100%' }}></td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          {/* Header with profile */}
-          <tr>
-            <td style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #d4d4d8' }}>
-              <div
-                style={{
-                  width: '35px',
-                  height: '35px',
-                  backgroundColor: '#cbd5e1',
-                  borderRadius: '50%',
-                  margin: '0 auto 8px',
-                }}
-              />
-              <Text style={{ margin: '0', color: '#94a3b8', fontSize: '14px', fontFamily: 'Georgia, "Times New Roman", serif' }}>
-                likely
-              </Text>
-            </td>
-          </tr>
-
-          {/* Chat area */}
-          <tr>
-            <td style={{ padding: '20px', borderRadius: '0 0 14px 14px' }}>
+            {/* Content overlay at bottom */}
+            <div style={{
+              position: 'absolute',
+              bottom: '0',
+              left: '0',
+              right: '0',
+              padding: '40px 32px 32px',
+            }}>
               
-              {/* User Message 1 (right-aligned) */}
-              <table width="100%" style={{ marginBottom: '16px', borderCollapse: 'collapse' }}>
-                <tr>
-                  <td style={{ width: '25%' }}></td>
-                  <td style={{ width: '75%', textAlign: 'right' }}>
-                    <div
-                      style={{
-                        backgroundColor: '#dbeafe',
-                        color: '#000000',
-                        fontSize: '14px',
-                        padding: '8px 16px',
-                        borderRadius: '16px',
-                        display: 'inline-block',
-                        maxWidth: '75%',
-                        fontFamily: 'Georgia, "Times New Roman", serif',
-                      }} 
-                    >
-                        hey... got a match?
-                    </div>
-                  </td>
-                </tr>
-              </table>
+              {/* Container for info and attractiveness box */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'stretch',
+                justifyContent: 'space-between',
+                marginBottom: '20px',
+              }}>
+                {/* Left side: Match info */}
+                <div style={{
+                  flex: '1',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}>
+                  {/* Match name */}
+                  <Text style={{
+                    fontSize: '32px',
+                    fontWeight: 'bold',
+                    color: '#1f2937',
+                    margin: '0 0 12px 0',
+                    fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+                  }}>
+                    {matchName}
+                  </Text>
 
-              {/* User Message 2 - New message (right-aligned) */}
-              <table width="100%" style={{ marginBottom: '16px', borderCollapse: 'collapse' }}>
-                <tr>
-                  <td style={{ width: '25%' }}></td>
-                  <td style={{ width: '75%', textAlign: 'right' }}>
-                    <div
-                      style={{
-                        backgroundColor: '#dbeafe',
-                        color: '#000000',
-                        fontSize: '14px',
-                        padding: '8px 16px',
-                        borderRadius: '16px',
-                        display: 'inline-block',
-                        maxWidth: '75%',
-                        fontFamily: 'Georgia, "Times New Roman", serif',
-                      }}
-                    >
-                        (please make them as attractive as me)
-                    </div>
-                  </td>
-                </tr>
-              </table>
+                  {/* Match details */}
+                  <Text style={{
+                    fontSize: '16px',
+                    color: '#374151',
+                    margin: '0 0 8px 0',
+                    fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+                  }}>
+                    {matchEthnicity.join(', ')} • {matchGender}
+                  </Text>
 
-              {/* Bot Message 1 - Match announcement */}
-              <table width="100%" style={{ marginBottom: '16px', borderCollapse: 'collapse' }}>
-                <tr>
-                  <td style={{ width: '25px', textAlign: 'left', verticalAlign: 'top', paddingRight: '8px' }}>
-                    <div
-                      style={{
-                        width: '25px',
-                        height: '25px',
-                        backgroundColor: '#cbd5e1',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                      }}
-                    />
-                  </td>
-                  <td style={{ width: '75%', textAlign: 'left' }}>
-                    <div
-                      style={{
-                        backgroundColor: '#e4e4e7',
-                        color: '#000000',
-                        fontSize: '14px',
-                        padding: '8px 16px',
-                        borderRadius: '16px',
-                        display: 'inline-block',
-                        maxWidth: '75%',
-                        fontFamily: 'Georgia, "Times New Roman", serif',
-                      }}
-                    >
-                      here's your match, {name} ❤️
-                    </div>
-                  </td>
-                  <td style={{ width: '25%' }}></td>
-                </tr>
-              </table>
+                  <Text style={{
+                    fontSize: '16px',
+                    color: '#374151',
+                    margin: '0',
+                    fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+                  }}>
+                    {matchYear} • {matchMajor}
+                  </Text>
+                </div>
 
-              {/* Bot Message 2 - Basic info */}
-              <table width="100%" style={{ marginBottom: '16px', borderCollapse: 'collapse' }}>
-                <tr>
-                  <td style={{ width: '25px', textAlign: 'left', verticalAlign: 'top', paddingRight: '8px' }}>
-                    <div
-                      style={{
-                        width: '25px',
-                        height: '25px',
-                        backgroundColor: '#cbd5e1',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                      }}
-                    />
-                  </td>
-                  <td style={{ width: '75%', textAlign: 'left' }}>
-                    <div
-                      style={{
-                        backgroundColor: '#e4e4e7',
-                        color: '#000000',
-                        fontSize: '14px',
-                        padding: '8px 16px',
-                        borderRadius: '16px',
-                        display: 'inline-block',
-                        maxWidth: '75%',
-                        fontFamily: 'Georgia, "Times New Roman", serif',
-                      }}
-                    >
-                      <div style={{ fontWeight: 'bold', fontSize: '16px', marginBottom: '4px' }}>
-                        {matchName}
-                      </div>
-                      <div style={{ color: '#52525b' }}>
-                        {matchEthnicity.join(', ')} • {matchGender}
-                      </div>
-                      <div style={{ color: '#52525b' }}>
-                        {matchYear} • {matchMajor}
-                      </div>
-                    </div>
-                  </td>
-                  <td style={{ width: '25%' }}></td>
-                </tr>
-              </table>
+                {/* Right side: Attractiveness difference */}
+                <div style={{
+                  border: '2px solid #1f2937',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  marginLeft: '16px',
+                  flexShrink: '0',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                  <Text style={{
+                    fontSize: '11px',
+                    color: '#1f2937',
+                    margin: '0 0 8px 0',
+                    fontFamily: 'Merriweather, Georgia, "Times New Roman", serif',
+                    textAlign: 'center',
+                    lineHeight: '1.3',
+                  }}>
+                    your attractiveness<br/>levels differ by
+                  </Text>
+                  <Text style={{
+                    fontSize: '28px',
+                    fontWeight: 'bold',
+                    color: '#1f2937',
+                    margin: '0',
+                    fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+                  }}>
+                    {diffOn10Scale}/10
+                  </Text>
+                </div>
+              </div>
 
-              {/* Bot Message 3 - Attractiveness difference */}
-              <table width="100%" style={{ marginBottom: '16px', borderCollapse: 'collapse' }}>
-                <tr>
-                  <td style={{ width: '25px', textAlign: 'left', verticalAlign: 'top', paddingRight: '8px' }}>
-                    <div
-                      style={{
-                        width: '25px',
-                        height: '25px',
-                        backgroundColor: '#cbd5e1',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                      }}
-                    />
-                  </td>
-                  <td style={{ width: '80%', textAlign: 'left' }}>
-                    <div
-                      style={{
-                        backgroundColor: '#e4e4e7',
-                        color: '#000000',
-                        fontSize: '14px',
-                        padding: '8px 16px',
-                        borderRadius: '16px',
-                        display: 'inline-block',
-                        maxWidth: '75%',
-                        fontFamily: 'Georgia, "Times New Roman", serif',
-                      }}
-                    >
-                      your attractiveness levels differ by {diffOn10Scale}/10 ✨
-                    </div>
-                  </td>
-                  <td style={{ width: '25%' }}></td>
-                </tr>
-              </table>
-
-              <table width="100%" style={{ marginBottom: '16px', borderCollapse: 'collapse' }}>
-                <tr>
-                  <td style={{ width: '25px', textAlign: 'left', verticalAlign: 'top', paddingRight: '8px' }}>
-                    <div
-                      style={{
-                        width: '25px',
-                        height: '25px',
-                        backgroundColor: '#cbd5e1',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                      }}
-                    />
-                  </td>
-                  <td style={{ width: '75%', textAlign: 'left' }}>
-                    <div
-                      style={{
-                        backgroundColor: '#e4e4e7',
-                        color: '#000000',
-                        fontSize: '14px',
-                        padding: '8px 16px',
-                        borderRadius: '16px',
-                        display: 'inline-block',
-                        maxWidth: '75%',
-                        fontFamily: 'Georgia, "Times New Roman", serif',
-                      }}
-                    >
-                      we wont say who's higher but yk...
-                    </div>
-                  </td>
-                  <td style={{ width: '25%' }}></td>
-                </tr>
-              </table>
-
-              {/* Bot Message 4 - Instagram */}
-              <table width="100%" style={{ marginBottom: '16px', borderCollapse: 'collapse' }}>
-                <tr>
-                  <td style={{ width: '25px', textAlign: 'left', verticalAlign: 'top', paddingRight: '8px' }}>
-                    <div
-                      style={{
-                        width: '25px',
-                        height: '25px',
-                        backgroundColor: '#cbd5e1',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                      }}
-                    />
-                  </td>
-                  <td style={{ width: '75%', textAlign: 'left' }}>
-                    <div
-                      style={{
-                        backgroundColor: '#e4e4e7',
-                        color: '#000000',
-                        fontSize: '14px',
-                        padding: '8px 16px',
-                        borderRadius: '16px',
-                        display: 'inline-block',
-                        maxWidth: '75%',
-                        fontFamily: 'Georgia, "Times New Roman", serif',
-                      }}
-                    >
-                      reach out on instagram:
-                      <div style={{ marginTop: '4px' }}>
-                        <a
-                          href={`https://instagram.com/${matchInstagram}`}
-                          style={{
-                            color: '#2563eb',
-                            textDecoration: 'none',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          @{matchInstagram}
-                        </a>
-                      </div>
-                    </div>
-                  </td>
-                  <td style={{ width: '25%' }}></td>
-                </tr>
-              </table>
-
-              {/* Bot Message 5 - Photo */}
-              <table width="100%" style={{ borderCollapse: 'collapse' }}>
-                <tr>
-                  <td style={{ width: '25px', textAlign: 'left', verticalAlign: 'top', paddingRight: '8px' }}>
-                    <div
-                      style={{
-                        width: '25px',
-                        height: '25px',
-                        backgroundColor: '#cbd5e1',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                      }}
-                    />
-                  </td>
-                  <td style={{ width: '75%', textAlign: 'left' }}>
-                    <div
-                      style={{
-                        backgroundColor: '#e4e4e7',
-                        padding: '8px',
-                        borderRadius: '16px',
-                        display: 'inline-block',
-                        maxWidth: '75%',
-                      }}
-                    >
-                      <img
-                        src={matchPhoto}
-                        alt={matchName}
-                        style={{
-                          width: '200px',
-                          height: '200px',
-                          borderRadius: '12px',
-                          objectFit: 'cover',
-                          display: 'block',
-                        }}
-                      />
-                    </div>
-                  </td>
-                  <td style={{ width: '25%' }}></td>
-                </tr>
-              </table>
-
-              {/* Bot Message 6 - Good luck */}
-              <table width="100%" style={{ marginTop: '16px', borderCollapse: 'collapse' }}>
-                <tr>
-                  <td style={{ width: '25px', textAlign: 'left', verticalAlign: 'top', paddingRight: '8px' }}>
-                    <div
-                      style={{
-                        width: '25px',
-                        height: '25px',
-                        backgroundColor: '#cbd5e1',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                      }}
-                    />
-                  </td>
-                  <td style={{ width: '75%', textAlign: 'left' }}>
-                    <div
-                      style={{
-                        backgroundColor: '#e4e4e7',
-                        color: '#000000',
-                        fontSize: '14px',
-                        padding: '8px 16px',
-                        borderRadius: '16px',
-                        display: 'inline-block',
-                        maxWidth: '75%',
-                        fontFamily: 'Georgia, "Times New Roman", serif',
-                      }}
-                    >
-                      go say hi! good luck 💫
-                    </div>
-                  </td>
-                  <td style={{ width: '25%' }}></td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
+              {/* Instagram CTA */}
+              <div style={{ textAlign: 'center' }}>
+                <a
+                  href={`https://instagram.com/${matchInstagram}`}
+                  style={{
+                    display: 'inline-block',
+                    backgroundColor: '#1f2937',
+                    color: '#ffffff',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    padding: '14px 32px',
+                    borderRadius: '12px',
+                    textDecoration: 'none',
+                    fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+                  }}
+                >
+                  say hi on instagram →
+                </a>
+                <Text style={{
+                  fontSize: '13px',
+                  color: '#374151',
+                  margin: '12px 0 0 0',
+                  fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+                }}>
+                  @{matchInstagram}
+                </Text>
+              </div>
+            </div>
+          </div>
+        </Section>
 
         {/* Footer */}
-        <Text
-          style={{
-            textAlign: 'center',
+        <Section style={{ textAlign: 'center', paddingTop: '24px', borderTop: '1px solid #e5e7eb' }}>
+          <Text style={{
             fontSize: '12px',
-            color: '#6b7280',
-            marginTop: '24px',
-            fontFamily: 'Georgia, "Times New Roman", serif',
-          }}
-        >
-          <a href="https://likely.one" style={{ color: '#6b7280', textDecoration: 'none' }}>
-            visit likely.one
-          </a>
-        </Text>
-        <Text
-          style={{
-            textAlign: 'center',
+            color: '#9ca3af',
+            margin: '0 0 8px 0',
+            fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+          }}>
+            good luck! 💫
+          </Text>
+          <Text style={{
             fontSize: '12px',
-            color: '#6b7280',
-            marginTop: '2px',
-            fontFamily: 'Georgia, "Times New Roman", serif',
-          }}
-        >
-          if this email looks oddly formatted, it's because your email client wasn't able to render it. sorry!
-        </Text>
+            color: '#9ca3af',
+            margin: '0',
+            fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+          }}>
+            <a href="https://likely.one" style={{ color: '#9ca3af', textDecoration: 'none' }}>
+              visit likely.one
+            </a>
+          </Text>
+        </Section>
       </Container>
     </Html>
   );

@@ -7,12 +7,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-center md:text-center">
           {/* Logo Section */}
           <div className="flex flex-col items-center">
-            <h2 
+            <a 
               className="text-4xl font-bold mb-2 text-gray-800"
               style={{ fontFamily: 'Merriweather, serif' }}
+              href="https://likely.one"
             >
               likely.one
-            </h2>
+            </a>
             <p 
               className="text-sm text-gray-600"
               style={{ fontFamily: 'Merriweather, serif' }}
@@ -103,15 +104,6 @@ export default function Footer() {
                   style={{ fontFamily: 'Merriweather, serif' }}
                 >
                   Berkeley
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="https://winchester.likely.one" 
-                  className="text-gray-700 hover:text-gray-900 transition-colors"
-                  style={{ fontFamily: 'Merriweather, serif' }}
-                >
-                  Winchester Thurston
                 </a>
               </li>
             </ul>
