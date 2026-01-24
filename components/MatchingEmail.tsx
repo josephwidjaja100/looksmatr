@@ -55,7 +55,7 @@ export default function MatchingEmail({
             margin: '0',
             fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
           }}>
-            hey {name}, here's your match ❤️
+            hey {name}, here's your match ♥︎
           </Text>
         </Section>
 
