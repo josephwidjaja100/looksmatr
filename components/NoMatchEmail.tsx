@@ -117,7 +117,7 @@ export default function NoMatchEmail({
             fontSize: '12px',
             color: '#9ca3af',
             margin: '0 0 8px 0',
-            fontFamily: 'Georgia, "Times New Roman", serif'
+            fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
           }}>
             better luck next time! 💫
           </Text>
@@ -125,7 +125,7 @@ export default function NoMatchEmail({
             fontSize: '12px',
             color: '#9ca3af',
             margin: '0',
-            fontFamily: 'Georgia, "Times New Roman", serif'
+            fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
           }}>
             <a href="https://likely.one" style={{ color: '#9ca3af', textDecoration: 'none' }}>
               visit likely.one
