@@ -11,6 +11,12 @@ const options = {
     strict: true,
     deprecationErrors: true,
   },
+  maxPoolSize: 10, // Each serverless instance uses max 10 connections
+  minPoolSize: 2,   // Keep 2 warm for quick response
+  maxIdleTimeMS: 30000, // 30 seconds before closing idle connections
+  connectTimeoutMS: 10000,
+  socketTimeoutMS: 45000,
+  serverSelectionTimeoutMS: 10000,
 }
  
 let client: MongoClient

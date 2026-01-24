@@ -11,7 +11,7 @@ export const sendOTPEmail = async (email: string, otpCode: string, type: 'signup
   
   try {
     const { data, error } = await resend.emails.send({
-      from: 'likely <onboarding@auth.likely.one>',
+      from: 'likely one <admin@likely.one>',
       to: [email],
       subject,
       react: OtpChatEmail({
@@ -48,7 +48,7 @@ export const sendMatchEmail = async (
 ) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'likely <match@likely.one>',
+      from: 'likely one <admin@likely.one>',
       to: [email],
       subject: 'you have a new match! 💘',
       react: MatchingEmail({
@@ -79,7 +79,7 @@ export const sendMatchEmail = async (
 export const sendNoMatchEmail = async (email: string, userName: string = 'there') => {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'likely <match@likely.one>',
+      from: 'likely one <admin@likely.one>',
       to: [email],
       subject: 'we got some bad news for you 😬',
       react: NoMatchEmail({ name: userName }),

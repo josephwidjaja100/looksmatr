@@ -41,6 +41,8 @@ const Profile = () => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const [showPhotoEditor, setShowPhotoEditor] = useState(false);
   const [tempImageUrl, setTempImageUrl] = useState<string | null>(null);
+  const [showCongrats, setShowCongrats] = useState(false);
+  const [congratsType, setCongratsType] = useState<'opt-in' | 'profile-complete'>('opt-in');
   const containerRef = useRef<HTMLDivElement | null>(null);
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -96,6 +98,25 @@ const Profile = () => {
   const areRequiredSectionsFilled = (data: ProfileData) => {
     const { name, year, major, instagram, gender, ethnicity, photo } = data;
     return name && year && major && gender && ethnicity.length > 0 && instagram && photo;
+  };
+
+  const getNextThursdayMidnight = () => {
+    const now = new Date();
+    const currentDay = now.getDay(); // 0 = Sunday, 4 = Thursday
+    let daysUntilThursday = 4 - currentDay;
+    
+    // If today is Thursday or past Thursday this week, get next Thursday
+    if (daysUntilThursday <= 0) {
+      daysUntilThursday += 7;
+    }
+    
+    const nextThursday = new Date(now);
+    nextThursday.setDate(nextThursday.getDate() + daysUntilThursday);
+    nextThursday.setHours(0, 0, 0, 0); // Set to midnight
+    
+    // Format: "Thursday, January 23"
+    const options: Intl.DateTimeFormatOptions = {month: 'short', day: 'numeric' };
+    return nextThursday.toLocaleDateString('en-US', options);
   };
 
   const mobileSections = [
@@ -176,7 +197,8 @@ const Profile = () => {
         const response = await fetch("/api/user");
 
         if (!response.ok) {
-          throw new Error("failed to fetch user data");
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || "failed to fetch user data");
         }
 
         const result = await response.json();
@@ -205,11 +227,13 @@ const Profile = () => {
             adjectivePreferences: data.profile.adjectivePreferences || []
           };
           setProfile(profileData);
+          setDataLoaded(true);
         }
-        setDataLoaded(true);
       } catch (error) {
         console.error("failed to load user data:", error);
-        toast.error("failed to load profile data");
+        if (status === "authenticated") {
+          toast.error("failed to load profile data");
+        }
       } finally {
         setLoading(false);
       }
@@ -368,6 +392,12 @@ const Profile = () => {
             adjectivePreferences: result.data.profile.adjectivePreferences || []
           });
         }
+
+      // Check if this is opt-in action and show congratulations
+      if (editingSection === 'optInMatching' && editValues.optInMatching) {
+        setCongratsType('opt-in');
+        setShowCongrats(true);
+      }
 
       if (shouldAnalyze && result.data?.profile?.photo) {
         toast.info("processing your photo...");
@@ -562,7 +592,7 @@ const Profile = () => {
           return (
             <div className="flex items-center justify-between w-full gap-2">
               <p className="text-sm font-medium text-gray-800 flex-shrink min-w-0">
-                {profile.optInMatching ? 'opted in to matching' : 'opted out of matching'}
+                {profile.optInMatching ? `you're in for the ${getNextThursdayMidnight()} match` : `you're out for ${getNextThursdayMidnight()}'s match`}
               </p>
               <div className="relative w-12 h-7 flex items-center rounded-full flex-shrink-0 pointer-events-none">
                 <div className={`absolute inset-0 w-12 h-7 rounded-full transition-colors duration-300 ${profile.optInMatching ? 'bg-gray-900' : 'bg-gray-300'}`} />
@@ -712,7 +742,7 @@ const Profile = () => {
         return (
           <div className="flex items-center justify-between w-full gap-2">
             <p className="text-sm font-medium text-gray-800 flex-shrink min-w-0">
-              {editValues.optInMatching ? 'opted in to matching' : 'opted out of matching'}
+              {editValues.optInMatching ? `you're in for the ${getNextThursdayMidnight()} match` : `you're out for ${getNextThursdayMidnight()}'s match`}
             </p>
             <button
               onClick={handleToggleOptIn}
@@ -915,6 +945,45 @@ const Profile = () => {
           />
         )}
 
+        {/* Congratulations Overlay */}
+        {showCongrats && (
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowCongrats(false)}>
+            <div className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12 max-w-md text-center" onClick={(e) => e.stopPropagation()}>
+              {congratsType === 'opt-in' ? (
+                <>
+                  <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4" style={{ fontFamily: 'Merriweather, serif' }}>
+                    you're in!
+                  </h2>
+                  <p className="text-lg font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>
+                    get ready for thursday
+                  </p>
+                  <p className="text-gray-600 mb-6" style={{ fontFamily: 'Merriweather, serif' }}>
+                    we'll send you an email with your match at midnight. go on a date, have fun, or just see where it goes...
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4" style={{ fontFamily: 'Merriweather, serif' }}>
+                    profile complete!
+                  </h2>
+                  <p className="text-lg text-gray-700 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>
+                    you're all set
+                  </p>
+                  <p className="text-gray-600 mb-6" style={{ fontFamily: 'Merriweather, serif' }}>
+                    opt in to matching to get paired with someone perfect for you. you'll get an email at thursday midnight.
+                  </p>
+                </>
+              )}
+              <button
+                onClick={() => setShowCongrats(false)}
+                className="w-full px-6 py-3 bg-gray-800 text-white font-bold rounded-lg hover:bg-gray-700 transition-all duration-300"
+                style={{ fontFamily: 'Merriweather, serif' }}
+              >
+                close
+              </button>
+            </div>
+          </div>
+        )}
 
         <style>{`
           @supports (padding: max(0px)) {
