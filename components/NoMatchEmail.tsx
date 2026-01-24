@@ -70,7 +70,7 @@ export default function NoMatchEmail({
             lineHeight: '1.6',
             fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
           }}>
-            we couldn't find anyone that fits your preferences <em>and</em> is within your attractiveness range.
+            we couldn't find anyone that fits your preferences <em>and</em> is as attractive as you.
           </Text>
 
           {/* Encouragement box */}
