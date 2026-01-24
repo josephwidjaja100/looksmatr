@@ -45,7 +45,7 @@ export default function About() {
                 our mission
               </h2>
               <p className="text-lg text-gray-700 mb-4 leading-relaxed" style={{ fontFamily: 'Merriweather, serif' }}>
-                we built likely.one because we truly believe the best relationships stem from not only mutual attraction, but equal attraction. we've heard too many horror stories of relationships getting destroyed because one partner believes they can do better, and we've had enough. we're realistic: we know that romantic feelings always come from some amoutn of physical attraction no matter how much we want to deny it, so why not face it head on. we want to create a strong base of physical attraction for a relationship, and whether your personalities are compatible is up to you to figure out.
+                we built likely.one because we truly believe the best relationships stem from not only mutual attraction, but equal attraction. we've heard too many horror stories of relationships getting destroyed because one partner believes they can do better, and we've had enough. we're realistic: we know that romantic feelings always come from some amount of physical attraction no matter how much we want to deny it, so why not face it head on? we want to create a strong base of physical attraction for a relationship, and whether your personalities are compatible is up to you to figure out.
               </p>
               <p className="text-lg text-gray-700 mb-4 leading-relaxed" style={{ fontFamily: 'Merriweather, serif' }}>
                 we wanted to create something different. no endless swiping, no algorithm trying to keep you on the app, just real matches you actually have a chance with.

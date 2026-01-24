@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
+import TypingAnimation from '@/components/TypingAnimation';
 
 // Map subdomains to their email domains and display names
 const SUBDOMAIN_CONFIG: Record<string, { emailDomain: string; displayName: string; url: string; active: boolean }> = {
@@ -158,7 +159,7 @@ const Home = () => {
     useEffect(() => {
       if (isVisible) {
         let startTime: number;
-        const duration = 2000;
+        const duration = 1500;
         const animate = (currentTime: number) => {
           if (!startTime) startTime = currentTime;
           const progress = Math.min((currentTime - startTime) / duration, 1);
@@ -179,10 +180,10 @@ const Home = () => {
   };
 
   const stats = [
-    { number: 78, suffix: '%', label: 'of matches lead to ghosting', source: 'Based on survey of 5,000 college students across 50 universities (2023)' },
-    { number: 92, suffix: '%', label: 'of users find their perfect match within 2 weeks', source: 'Internal platform analytics from 10,000+ active users' },
-    { number: 65, suffix: '%', label: 'of successful dates happen within 24 hours of matching', source: 'User behavior data from dating app studies (2024)' },
-    { number: 89, suffix: '%', label: 'report higher satisfaction with curated matches', source: 'Post-match survey responses from 2,500 participants' },
+    { number: 97, suffix: '%', label: 'of guys\'s swipes don\'t lead to a match', source: 'analysis of 3,700+ Tinder profiles from Swipestats.io' },
+    { number: 95, suffix: '%', label: 'of Tinder swipes by women are passes (left swipes)', source: 'user behavior estimate from Tinder data' },
+    { number: 80, suffix: '%', label: 'of men perceived as below average attractiveness', source: 'user data from OkCupid online dating site' },
+    { number: 78, suffix: '%', label: 'of users quit dating apps from swipe fatigue', source: 'study of 1000+ americans by Forbes Health' },
   ];
 
   const handleGetMatched = () => {
@@ -946,7 +947,7 @@ const Home = () => {
         </div>
 
         {/* The Problem Section */}
-        <section className="py-16 px-4">
+        <section className="py-10 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-8 md:p-12">
               <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12" style={{ fontFamily: 'Merriweather, serif' }}>
@@ -962,7 +963,7 @@ const Home = () => {
                 {stats.map((stat, index) => (
                   <motion.div
                     key={index}
-                    className="relative backdrop-blur-md bg-white/10 shadow-lg p-6 rounded-2xl border border-white/20 text-center"
+                    className="relative backdrop-blur-md bg-white/2 shadow-lg p-6 rounded-2xl border border-white/20 text-center"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -983,8 +984,15 @@ const Home = () => {
           </div>
         </section>
 
+        {/* Solution Section */}
+        <section className="py-10 px-4">
+          <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 md:px-8">
+            <TypingAnimation />
+          </div>
+        </section>
+
         {/* How It Works Section */}
-        <section className="py-16 px-4">
+        <section className="py-10 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-8 md:p-12">
               <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12" style={{ fontFamily: 'Merriweather, serif' }}>
@@ -1027,7 +1035,7 @@ const Home = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-16 px-4">
+        <section className="py-10 px-4">
           <div className="max-w-4xl mx-auto">
             <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-8 md:p-12">
               <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12" style={{ fontFamily: 'Merriweather, serif' }}>
@@ -1057,10 +1065,10 @@ const Home = () => {
                     answer: "yep! just opt back out in your profile and you won't receive a match until you opt back in."
                   }
                 ].map((faq, index) => (
-                  <div key={index} className="border border-gray-600 rounded-lg overflow-hidden transition-all duration-200">
+                  <div key={index} className="backdrop-blur-md bg-white/2 shadow-lg rounded-lg border border-white/20 overflow-hidden transition-all duration-200">
                     <button
                       onClick={() => setExpandedFAQ(expandedFAQ === index ? null : index)}
-                      className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors text-left"
+                      className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/10 transition-colors text-left"
                     >
                       <h3 className="text-lg font-bold text-gray-800" style={{ fontFamily: 'Merriweather, serif' }}>
                         {faq.question}
@@ -1077,7 +1085,7 @@ const Home = () => {
                       </svg>
                     </button>
                     {expandedFAQ === index && (
-                      <div className="px-6 py-4 bg-white/5 border-t border-gray-600">
+                      <div className="px-6 pt-0 pb-4 bg-white/10">
                         <p className="text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
                           {faq.answer}
                         </p>
@@ -1091,7 +1099,7 @@ const Home = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-24 px-4">
+        <section className="py-10 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8" style={{ fontFamily: 'Merriweather, serif' }}>
               find your likely one?
