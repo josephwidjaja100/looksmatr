@@ -971,7 +971,7 @@ const Home = () => {
           <div className="max-w-6xl mx-auto">
             <div className="backdrop-blur-sm bg-white/20 rounded-3xl shadow-onboarding p-8 md:p-12">
               <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12" style={{ fontFamily: 'Merriweather, serif' }}>
-                the problem
+                the problem with dating apps
               </h2>
               <motion.div 
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
