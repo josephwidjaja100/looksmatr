@@ -4,6 +4,7 @@ import {
   Heading,
   Section,
   Text,
+  Img,
 } from '@react-email/components';
 
 type MatchingEmailProps = {
@@ -55,162 +56,139 @@ export default function MatchingEmail({
             margin: '0',
             fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
           }}>
-            hey {name}, here's your match ♥︎
+            hey! here's your match ♥︎
           </Text>
         </Section>
 
-        {/* Main content card with photo and overlay */}
+        {/* Main content card */}
         <Section style={{
           backgroundColor: '#ffffff',
           border: '2px solid #e5e7eb',
           borderRadius: '16px',
-          overflow: 'hidden',
+          padding: '40px',
+          textAlign: 'center',
           marginBottom: '32px'
         }}>
-          {/* Photo container with overlay */}
+          
+          {/* Photo */}
+          <div style={{ width: '100%', marginBottom: '32px' }}>
+            <Img 
+              src={matchPhoto} 
+              alt="Match photo" 
+              style={{ 
+                width: '100%', 
+                height: 'auto', 
+                borderRadius: '12px', 
+                display: 'block' 
+              }} 
+            />
+          </div>
+
+          {/* Match info and attractiveness */}
           <div style={{
-            position: 'relative',
-            width: '100%',
-            height: '500px',
-            backgroundImage: `url(${matchPhoto})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            display: 'flex',
+            alignItems: 'stretch',
+            justifyContent: 'space-between',
+            marginBottom: '28px',
           }}>
-            {/* Gradient fade overlay - Layer 1 (vertical fade) */}
+            {/* Left side: Match info */}
             <div style={{
-              position: 'absolute',
-              bottom: '0',
-              left: '0',
-              right: '0',
-              height: '100%',
-              background: 'linear-gradient(to top, rgba(219, 234, 254, 0.95) 0%, rgba(219, 234, 254, 0.7) 20%, rgba(219, 234, 254, 0.3) 40%, transparent 60%)',
-            }} />
-            {/* Gradient fade overlay - Layer 2 (diagonal color transition) */}
-            <div style={{
-              position: 'absolute',
-              bottom: '0',
-              left: '0',
-              right: '0',
-              height: '100%',
-              background: 'linear-gradient(135deg, rgba(219, 234, 254, 0.3) 0%, rgba(233, 213, 255, 0.3) 100%)',
-            }} />
-            
-            {/* Content overlay at bottom */}
-            <div style={{
-              position: 'absolute',
-              bottom: '0',
-              left: '0',
-              right: '0',
-              padding: '40px 32px 32px',
+              flex: '1',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
             }}>
-              
-              {/* Container for info and attractiveness box */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'stretch',
-                justifyContent: 'space-between',
-                marginBottom: '20px',
+              {/* Match name */}
+              <Text style={{
+                fontSize: '32px',
+                fontWeight: 'bold',
+                color: '#1f2937',
+                margin: '0 0 12px 0',
+                fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
               }}>
-                {/* Left side: Match info */}
-                <div style={{
-                  flex: '1',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                }}>
-                  {/* Match name */}
-                  <Text style={{
-                    fontSize: '32px',
-                    fontWeight: 'bold',
-                    color: '#1f2937',
-                    margin: '0 0 12px 0',
-                    fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
-                  }}>
-                    {matchName}
-                  </Text>
+                {matchName}
+              </Text>
 
-                  {/* Match details */}
-                  <Text style={{
-                    fontSize: '16px',
-                    color: '#374151',
-                    margin: '0 0 8px 0',
-                    fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
-                  }}>
-                    {matchEthnicity.join(', ')} • {matchGender}
-                  </Text>
+              {/* Match details */}
+              <Text style={{
+                fontSize: '16px',
+                color: '#374151',
+                margin: '0 0 8px 0',
+                fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+              }}>
+                {matchEthnicity.join(', ')} • {matchGender}
+              </Text>
 
-                  <Text style={{
-                    fontSize: '16px',
-                    color: '#374151',
-                    margin: '0',
-                    fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
-                  }}>
-                    {matchYear} • {matchMajor}
-                  </Text>
-                </div>
-
-                {/* Right side: Attractiveness difference */}
-                <div style={{
-                  border: '2px solid #1f2937',
-                  borderRadius: '12px',
-                  padding: '16px',
-                  marginLeft: '16px',
-                  flexShrink: '0',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                  <Text style={{
-                    fontSize: '11px',
-                    color: '#1f2937',
-                    margin: '0 0 8px 0',
-                    fontFamily: 'Merriweather, Georgia, "Times New Roman", serif',
-                    textAlign: 'center',
-                    lineHeight: '1.3',
-                  }}>
-                    your attractiveness<br/>levels differ by
-                  </Text>
-                  <Text style={{
-                    fontSize: '28px',
-                    fontWeight: 'bold',
-                    color: '#1f2937',
-                    margin: '0',
-                    fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
-                  }}>
-                    {diffOn10Scale}/10
-                  </Text>
-                </div>
-              </div>
-
-              {/* Instagram CTA */}
-              <div style={{ textAlign: 'center' }}>
-                <a
-                  href={`https://instagram.com/${matchInstagram}`}
-                  style={{
-                    display: 'inline-block',
-                    backgroundColor: '#1f2937',
-                    color: '#ffffff',
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                    padding: '14px 32px',
-                    borderRadius: '12px',
-                    textDecoration: 'none',
-                    fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
-                  }}
-                >
-                  say hi on instagram →
-                </a>
-                <Text style={{
-                  fontSize: '13px',
-                  color: '#374151',
-                  margin: '12px 0 0 0',
-                  fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
-                }}>
-                  @{matchInstagram}
-                </Text>
-              </div>
+              <Text style={{
+                fontSize: '16px',
+                color: '#374151',
+                margin: '0',
+                fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+              }}>
+                {matchYear} • {matchMajor}
+              </Text>
             </div>
+
+            {/* Right side: Attractiveness difference */}
+            <div style={{
+              border: '2px solid #1f2937',
+              borderRadius: '12px',
+              padding: '16px',
+              marginLeft: '16px',
+              flexShrink: '0',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <Text style={{
+                fontSize: '11px',
+                color: '#1f2937',
+                margin: '0 0 8px 0',
+                fontFamily: 'Merriweather, Georgia, "Times New Roman", serif',
+                textAlign: 'center',
+                lineHeight: '1.3',
+              }}>
+                your attractiveness<br/>levels differ by
+              </Text>
+              <Text style={{
+                fontSize: '28px',
+                fontWeight: 'bold',
+                color: '#1f2937',
+                margin: '0',
+                fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+              }}>
+                {diffOn10Scale}/10
+              </Text>
+            </div>
+          </div>
+
+          {/* Instagram CTA */}
+          <div style={{ textAlign: 'center' }}>
+            <a
+              href={`https://instagram.com/${matchInstagram}`}
+              style={{
+                display: 'inline-block',
+                backgroundColor: '#1f2937',
+                color: '#ffffff',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                padding: '14px 32px',
+                borderRadius: '12px',
+                textDecoration: 'none',
+                fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+              }}
+            >
+              say hi on instagram →
+            </a>
+            <Text style={{
+              fontSize: '13px',
+              color: '#374151',
+              margin: '12px 0 0 0',
+              fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
+            }}>
+              @{matchInstagram}
+            </Text>
           </div>
         </Section>
 

@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import Dropdown from '@/components/Dropdown';
 import MultiselectDropdown from '@/components/MultiselectDropdown';
 import PhotoEditor from '@/components/PhotoEditor';
-import { validateProfileDataWithImage } from '@/lib/validation/userProfile-validation';
+import { validateProfileDataWithImage, getMajorOptionsForSchool } from '@/lib/validation/userProfile-validation';
 
 const Profile = () => {
   const { data: session, status } = useSession();
@@ -92,7 +92,10 @@ const Profile = () => {
 
   const genderOptions = ['male', 'female', 'non-binary'];
   const yearOptions = ['freshman', 'sophomore', 'junior', 'senior', 'grad student'];
-  const majorOptions = ["aeronautics and astronautics", "african and african american studies", "african studies", "american studies", "anthropology", "applied physics", "archaeology", "art history", "art practice", "asian american studies", "atmosphere / energy", "bioengineering", "biology", "biomechanical engineering", "biomedical computation", "chemical engineering", "chemistry", "chicana/o - latina/o studies", "china studies", "civil engineering", "classics", "communication", "community health and prevention research", "comparative literature", "comparative studies in race and ethnicity", "computer science", "creative writing", "dance (taps minor)", "data science", "data science & social systems", "democracy, development, and the rule of law", "design", "digital humanities", "earth and planetary sciences", "earth systems", "east asian studies", "economics", "education", "electrical engineering", "energy science and engineering", "engineering physics", "english", "environmental systems engineering", "ethics in society", "european studies", "feminist, gender, and sexuality studies", "film and media studies", "french", "geophysics", "german studies", "global studies", "history", "honors in the arts", "human biology", "human rights", "iberian and latin american cultures", "international policy studies", "international relations", "international security studies", "iranian studies", "islamic studies", "italian", "japanese", "jewish studies", "korean", "laboratory animal science", "latin american studies", "linguistics", "management science and engineering", "materials science and engineering", "mathematical and computational science", "mathematics", "mechanical engineering", "medieval studies", "middle eastern language, literature and culture", "modern languages", "modern thought and literature", "music", "music, science, and technology", "native american studies", "philosophy", "philosophy and religious studies", "physics", "political science", "portuguese", "psychology", "public policy", "religious studies", "science, technology, and society", "slavic languages and literatures", "sociology", "south asian studies", "spanish", "statistics", "sustainability", "sustainable architecture + engineering", "symbolic systems", "theater and performance studies", "translation studies", "urban studies"];
+  // Get school-specific major options based on user's email
+  const majorOptions = session?.user?.email 
+    ? getMajorOptionsForSchool(session.user.email)
+    : ["aeronautics and astronautics", "african and african american studies", "african studies", "american studies", "anthropology", "applied physics", "archaeology", "art history", "art practice", "asian american studies", "atmosphere / energy", "bioengineering", "biology", "biomechanical engineering", "biomedical computation", "chemical engineering", "chemistry", "chicana/o - latina/o studies", "china studies", "civil engineering", "classics", "communication", "community health and prevention research", "comparative literature", "comparative studies in race and ethnicity", "computer science", "creative writing", "dance (taps minor)", "data science", "data science & social systems", "democracy, development, and the rule of law", "design", "digital humanities", "earth and planetary sciences", "earth systems", "east asian studies", "economics", "education", "electrical engineering", "energy science and engineering", "engineering physics", "english", "environmental systems engineering", "ethics in society", "european studies", "feminist, gender, and sexuality studies", "film and media studies", "french", "geophysics", "german studies", "global studies", "history", "honors in the arts", "human biology", "human rights", "iberian and latin american cultures", "international policy studies", "international relations", "international security studies", "iranian studies", "islamic studies", "italian", "japanese", "jewish studies", "korean", "laboratory animal science", "latin american studies", "linguistics", "management science and engineering", "materials science and engineering", "mathematical and computational science", "mathematics", "mechanical engineering", "medieval studies", "middle eastern language, literature and culture", "modern languages", "modern thought and literature", "music", "music, science, and technology", "native american studies", "philosophy", "philosophy and religious studies", "physics", "political science", "portuguese", "psychology", "public policy", "religious studies", "science, technology, and society", "slavic languages and literatures", "sociology", "south asian studies", "spanish", "statistics", "sustainability", "sustainable architecture + engineering", "symbolic systems", "theater and performance studies", "translation studies", "urban studies"];
   const ethnicityOptions = ['prefer not to answer', 'african', 'east asian', 'south asian', 'southeast asian', 'black / african american', 'hispanic / latinx', 'middle eastern / north african', 'native american / alaskan native', 'native hawaiian / pacific islander', 'white'];
 
   const areRequiredSectionsFilled = (data: ProfileData) => {
@@ -312,7 +315,8 @@ const Profile = () => {
     }
 
     // For other sections, only validate the current section
-    const validation = validateProfileDataWithImage(editValues, profileImageFile, editingSection);
+    const userEmail = session?.user?.email ?? undefined;
+    const validation = validateProfileDataWithImage(editValues, profileImageFile, editingSection, userEmail);
     if (!validation.isValid) {
       toast.error(validation.error);
       return;
@@ -675,7 +679,7 @@ const Profile = () => {
             <Dropdown
               value={editValues.major}
               onChange={(val) => setEditValues({...editValues, major: val})}
-              options={majorOptions}
+              options={[...majorOptions]}
               placeholder="major"
             />
           </div>

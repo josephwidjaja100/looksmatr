@@ -180,10 +180,30 @@ const Home = () => {
   };
 
   const stats = [
-    { number: 97, suffix: '%', label: 'of guys\'s swipes don\'t lead to a match', source: 'analysis of 3,700+ Tinder profiles from Swipestats.io' },
-    { number: 95, suffix: '%', label: 'of Tinder swipes by women are passes (left swipes)', source: 'user behavior estimate from Tinder data' },
-    { number: 80, suffix: '%', label: 'of men perceived as below average attractiveness', source: 'user data from OkCupid online dating site' },
-    { number: 78, suffix: '%', label: 'of users quit dating apps from swipe fatigue', source: 'study of 1000+ americans by Forbes Health' },
+    {
+      number: 98,
+      suffix: '%',
+      label: "of swipes on major dating apps never become a match or conversation",
+      source: "Tinder reports ~1.8% overall match rate on 1.4B daily swipes (CNET analysis of Tinder data)"
+    },
+    {
+      number: 79,
+      suffix: '%',
+      label: "of users say they feel emotionally drained or burnt out from using dating apps",
+      source: "U.S. surveys on dating app fatigue and burnout reported by major health and tech outlets"
+    },
+    {
+      number: 70,
+      suffix: '%',
+      label: "of users say dating apps make them feel less attractive over time",
+      source: "surveys of adults about self-esteem and perceived desirability on dating apps"
+    },
+    {
+      number: 75,
+      suffix: '%',
+      label: 'of daters say they feel stuck chasing people “out of their league”',
+      source: 'polls of app users about perceived “leagues” in dating'
+    },
   ];
 
   const handleGetMatched = () => {
@@ -744,7 +764,7 @@ const Home = () => {
         <div className="relative">
           <input
             type="text"
-            placeholder={typeof window !== 'undefined' && window.location.hostname === 'localhost' ? "email or username" : "sunetid"}
+            placeholder={typeof window !== 'undefined' && window.location.hostname === 'localhost' ? "email or username" : "email"}
             value={loginState.emailPrefix}
             onChange={(e) => {
               const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost';

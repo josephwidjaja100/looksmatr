@@ -165,7 +165,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // For regular profile updates, do section-specific validation
-    const validation = validateProfileDataWithImage(requestData, imageFile, editingSection);
+    const validation = validateProfileDataWithImage(requestData, imageFile, editingSection, session.user.email);
     if (!validation.isValid) {
       console.error('validation failed:', validation.error);
       console.error('request data:', requestData);

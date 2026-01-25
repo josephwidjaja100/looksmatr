@@ -4,6 +4,7 @@ import { sendMatchEmail, sendNoMatchEmail } from '@/lib/email-service';
 import { MongoClient } from 'mongodb';
 import blossom from 'edmonds-blossom';
 import { Client } from "@gradio/client";
+import { getSchoolFromEmail } from '@/lib/validation/userProfile-validation';
 
 // Interface definitions
 interface User {
@@ -320,6 +321,13 @@ export async function GET(request: NextRequest) {
         // Skip if already matched historically
         const historicalMatchesForUser1 = historicalMatchesByUser.get(user1Id);
         if (historicalMatchesForUser1?.has(user2Id)) {
+          continue;
+        }
+        
+        // Check if same school (email domain)
+        const user1School = getSchoolFromEmail(user1.email);
+        const user2School = getSchoolFromEmail(user2.email);
+        if (user1School !== user2School || !user1School || !user2School) {
           continue;
         }
         

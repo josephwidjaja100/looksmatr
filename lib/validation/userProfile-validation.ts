@@ -35,7 +35,8 @@ export const ETHNICITY_OPTIONS = [
   'white'
 ] as const;
 
-export const MAJOR_OPTIONS = [
+// Stanford majors
+export const STANFORD_MAJOR_OPTIONS = [
   "aeronautics and astronautics",
   "african and african american studies",
   "african studies",
@@ -138,6 +139,397 @@ export const MAJOR_OPTIONS = [
   "urban studies"
 ] as const;
 
+// Penn State majors
+export const PSU_MAJOR_OPTIONS = [
+  "accounting",
+  "acting",
+  "actuarial science",
+  "administration of justice",
+  "advertising/public relations",
+  "aerospace engineering",
+  "african american studies",
+  "african and african american studies",
+  "african studies",
+  "agribusiness management",
+  "agricultural and biorenewable systems management",
+  "agricultural and extension education",
+  "agricultural science",
+  "american studies",
+  "animal science",
+  "anthropological science",
+  "anthropology",
+  "applied linguistics",
+  "architectural engineering",
+  "architecture",
+  "art",
+  "art education",
+  "art history",
+  "artificial intelligence engineering",
+  "artificial intelligence methods and applications",
+  "arts administration",
+  "asian studies",
+  "astronomy and astrophysics",
+  "biobehavioral health",
+  "biochemistry and molecular biology",
+  "biological engineering",
+  "biology",
+  "biomedical engineering",
+  "biotechnology",
+  "business",
+  "business analytics and information systems",
+  "business economics",
+  "chemical engineering",
+  "chemistry",
+  "chinese",
+  "civil engineering",
+  "classics and ancient mediterranean studies",
+  "communication arts and sciences",
+  "communication sciences and disorders",
+  "communications",
+  "community, environment, and development",
+  "comparative literature",
+  "computer engineering",
+  "computer science",
+  "corporate communication",
+  "corporate innovation and entrepreneurship",
+  "creative writing",
+  "criminal justice",
+  "criminology",
+  "cybersecurity analytics and operations",
+  "data sciences",
+  "digital arts and media design",
+  "digital journalism and media",
+  "digital media, arts, and technology",
+  "digital multimedia design",
+  "earth science and policy",
+  "earth sciences",
+  "economics",
+  "education and public policy",
+  "electrical engineering",
+  "electrical engineering technology",
+  "electrical and computer engineering technology",
+  "electro-mechanical engineering technology",
+  "elementary and early childhood education",
+  "elementary education",
+  "energy and sustainability policy",
+  "energy business and finance",
+  "energy engineering",
+  "engineering",
+  "engineering science",
+  "english",
+  "enterprise technology integration",
+  "environmental resource management",
+  "environmental science",
+  "environmental studies",
+  "environmental systems engineering",
+  "film production",
+  "finance",
+  "food science",
+  "forensic science",
+  "forest ecosystem management",
+  "french and francophone studies",
+  "functional data analytics",
+  "geobiology",
+  "geography",
+  "geosciences",
+  "german",
+  "global and international studies",
+  "global studies",
+  "graphic design",
+  "health humanities",
+  "health policy and administration",
+  "history",
+  "hospitality management",
+  "human capital management",
+  "human development and family studies",
+  "human-centered design and development",
+  "humanities",
+  "immunology and infectious disease",
+  "industrial engineering",
+  "information sciences and technology",
+  "information systems",
+  "information technology",
+  "information technology ethics and compliance",
+  "integrated social sciences",
+  "integrative arts",
+  "integrative science",
+  "interdisciplinary business with engineering studies",
+  "interdisciplinary science and business",
+  "international business",
+  "international politics",
+  "italian",
+  "japanese",
+  "jewish studies",
+  "journalism",
+  "kinesiology",
+  "korean",
+  "labor and human resources",
+  "landscape architecture",
+  "landscape contracting",
+  "latin american studies",
+  "law and society",
+  "linguistics",
+  "management",
+  "management information systems",
+  "marketing",
+  "materials science and engineering",
+  "mathematical sciences",
+  "mathematics",
+  "mechanical engineering",
+  "mechanical engineering technology",
+  "media and communication",
+  "media studies",
+  "medieval studies",
+  "meteorology and atmospheric science",
+  "microbiology",
+  "middle east studies",
+  "middle level education",
+  "mining engineering",
+  "multidisciplinary studies",
+  "music",
+  "music education",
+  "music technology",
+  "musical arts",
+  "musical theatre",
+  "neurobiology",
+  "nuclear engineering",
+  "nursing",
+  "nutritional sciences",
+  "occupational science",
+  "organizational and professional communication",
+  "organizational leadership",
+  "petroleum and natural gas engineering",
+  "pharmacology and toxicology",
+  "philosophy",
+  "physics",
+  "planetary science and astronomy",
+  "plant sciences",
+  "plastics engineering technology",
+  "political science",
+  "polymer engineering and science",
+  "premedicine",
+  "professional photography",
+  "project and supply chain management",
+  "psychological and social sciences",
+  "psychology",
+  "public policy",
+  "race and ethnic studies",
+  "rail transportation engineering",
+  "real estate",
+  "recreation, park, and tourism management",
+  "rehabilitation and human services",
+  "risk management",
+  "russian",
+  "science",
+  "secondary education",
+  "security and risk analysis",
+  "social data analytics",
+  "social work",
+  "sociology",
+  "software engineering",
+  "spanish",
+  "special education",
+  "statistics",
+  "strategic communications",
+  "structural design and construction engineering technology",
+  "supply chain and information systems",
+  "surveying engineering",
+  "systems neuroscience",
+  "telecommunications and media industries",
+  "theatre",
+  "turfgrass science",
+  "veterinary and biomedical sciences",
+  "visual art studies",
+  "wildlife and fisheries science",
+  "women's, gender, and sexuality studies",
+  "workforce education and development",
+  "world languages education",
+  "writing and digital media"
+] as const;
+
+// Berkeley majors
+export const BERKELEY_MAJOR_OPTIONS = [
+  // Arts & Humanities
+  "ancient greek and roman studies",
+  "greek",
+  "latin",
+  "art history",
+  "art practice",
+  "celtic studies",
+  "comparative literature",
+  "dutch studies",
+  "chinese language and culture",
+  "japanese language and culture",
+  "korean language and culture",
+  "east asian religion, thought, and culture",
+  "english",
+  "film and media",
+  "french",
+  "german",
+  "italian studies",
+  "middle eastern languages and culture",
+  "middle eastern worlds",
+  "music",
+  "near eastern civilizations",
+  "philosophy",
+  "rhetoric",
+  "danish",
+  "finnish",
+  "norwegian",
+  "old norse",
+  "swedish",
+  "armenian",
+  "bosnian / croatian / serbian",
+  "czech",
+  "hungarian",
+  "polish",
+  "russian",
+  "south and southeast asian studies",
+  "spanish and portuguese",
+  "latin american languages, literature, and cultures",
+  "hispanic languages, literature, and bilingualism",
+  "theater and performance studies",
+  "dance and performance studies",
+
+  // Biological Sciences
+  "integrative biology",
+  "molecular and cell biology",
+  "biochemistry and molecular biology",
+  "molecular therapeutics",
+  "cell and developmental biology",
+  "genetics, genomics, and development",
+  "immunology and pathogenesis",
+  "neuroscience",
+  "public health",
+  "life science, business, and entrepreneurship",
+
+  // Interdisciplinary
+  "american studies",
+  "interdisciplinary studies",
+  "legal studies",
+  "media studies",
+
+  // Mathematical & Physical Sciences
+  "analytics",
+  "astrophysics",
+  "chemistry",
+  "earth and planetary science",
+  "atmospheric science",
+  "environmental earth science",
+  "geology",
+  "geophysics",
+  "marine science",
+  "planetary science",
+  "applied mathematics",
+  "mathematics",
+  "mathematics with teaching concentration",
+  "physics",
+
+  // Social Sciences
+  "african american studies",
+  "anthropology",
+  "asian american and asian diaspora studies",
+  "chicano studies",
+  "chicanx latinx studies",
+  "cognitive science",
+  "economics",
+  "educational sciences",
+  "ethnic studies",
+  "gender and women's studies",
+  "geography",
+  "global studies",
+  "asian area studies (china)",
+  "asian area studies (japan)",
+  "developmental studies",
+  "latin american studies",
+  "middle eastern studies",
+  "peace and conflict studies",
+  "history",
+  "linguistics",
+  "native american studies",
+  "political economy",
+  "political science",
+  "psychology",
+  "social welfare",
+  "sociology",
+
+  // Computing, Data Science, and Society
+  "computer science",
+  "data science",
+  "statistics",
+
+  // Chemistry
+  "chemical biology",
+  "chemical engineering",
+
+  // Engineering
+  "aerospace engineering",
+  "bioengineering",
+  "civil engineering",
+  "electrical engineering and computer sciences",
+  "environmental engineering",
+  "engineering science",
+  "energy engineering",
+  "engineering mathematics and statistics",
+  "engineering physics",
+  "environmental engineering science",
+  "industrial engineering and operations research",
+  "materials science and engineering",
+  "mechanical engineering",
+  "nuclear engineering",
+  "management, entrepreneurship, and technology",
+
+  // Environmental Design
+  "architecture",
+  "landscape architecture",
+  "sustainable environmental design",
+  "urban studies",
+
+  // Natural Resources
+  "conservation and resource studies",
+  "ecosystem management and forestry",
+  "forestry",
+  "natural resource management",
+  "environmental economics and policy",
+  "environmental sciences",
+  "genetics and plant biology",
+  "microbial biology",
+  "molecular environmental biology",
+  "nutrition and metabolic biology",
+  "society and environment",
+
+  // Business
+  "business administration",
+  "global management"
+] as const;
+
+// School email domain to major options mapping
+export const SCHOOL_MAJOR_OPTIONS: Record<string, readonly string[]> = {
+  'stanford.edu': STANFORD_MAJOR_OPTIONS,
+  'psu.edu': PSU_MAJOR_OPTIONS,
+  'berkeley.edu': BERKELEY_MAJOR_OPTIONS,
+};
+
+// Default to Stanford for backward compatibility
+export const MAJOR_OPTIONS = STANFORD_MAJOR_OPTIONS;
+
+// Utility function to get school from email domain
+export function getSchoolFromEmail(email: string): string | null {
+  if (!email || typeof email !== 'string') return null;
+  const domain = email.split('@')[1]?.toLowerCase();
+  return domain || null;
+}
+
+// Utility function to get major options for a school
+export function getMajorOptionsForSchool(email: string): readonly string[] {
+  const school = getSchoolFromEmail(email);
+  if (school && SCHOOL_MAJOR_OPTIONS[school]) {
+    return SCHOOL_MAJOR_OPTIONS[school];
+  }
+  // Default to Stanford if school not found
+  return STANFORD_MAJOR_OPTIONS;
+}
+
 export const CHARACTER_LIMITS = {
   nameMin: 1,
   nameMax: 50,
@@ -206,13 +598,22 @@ export function validateYear(year: string): { isValid: boolean; error?: string }
   return { isValid: true };
 }
 
-export function validateMajor(major: string): { isValid: boolean; error?: string } {
+export function validateMajor(major: string, userEmail?: string): { isValid: boolean; error?: string } {
   if (!major) {
     return { isValid: false, error: 'all basic info must be filled' };
   }
   
-  if (!MAJOR_OPTIONS.includes(major as any)) {
-    return { isValid: false, error: 'invalid major selection' };
+  // If userEmail is provided, validate against school-specific majors
+  if (userEmail) {
+    const validMajors = getMajorOptionsForSchool(userEmail);
+    if (!validMajors.includes(major as any)) {
+      return { isValid: false, error: 'invalid major selection' };
+    }
+  } else {
+    // Fallback to default validation (Stanford) if no email provided
+    if (!MAJOR_OPTIONS.includes(major as any)) {
+      return { isValid: false, error: 'invalid major selection' };
+    }
   }
   
   return { isValid: true };
@@ -463,7 +864,7 @@ export function validateProfileImage(file: File | null): { isValid: boolean; err
   return { isValid: true, validFile: file };
 }
 
-export function validateProfileData(data: any, section?: string | null): { isValid: boolean; error?: string; validData?: UserProfileData } {
+export function validateProfileData(data: any, section?: string | null, userEmail?: string): { isValid: boolean; error?: string; validData?: UserProfileData } {
   if (!data || typeof data !== 'object') {
     return { isValid: false, error: 'invalid profile data' };
   }
@@ -478,7 +879,7 @@ export function validateProfileData(data: any, section?: string | null): { isVal
         const yearValidation = validateYear(data.year);
         if (!yearValidation.isValid) return yearValidation;
         
-        const majorValidation = validateMajor(data.major);
+        const majorValidation = validateMajor(data.major, userEmail);
         if (!majorValidation.isValid) return majorValidation;
         
         const genderValidation = validateGender(data.gender);
@@ -519,7 +920,7 @@ export function validateProfileData(data: any, section?: string | null): { isVal
     const yearValidation = validateYear(data.year);
     if (!yearValidation.isValid) return yearValidation;
     
-    const majorValidation = validateMajor(data.major);
+    const majorValidation = validateMajor(data.major, userEmail);
     if (!majorValidation.isValid) return majorValidation;
     
     const instagramValidation = validateInstagram(data.instagram || '');
@@ -566,7 +967,8 @@ export function validateProfileData(data: any, section?: string | null): { isVal
 export function validateProfileDataWithImage(
   data: any, 
   imageFile?: File | null,
-  section?: string | null
+  section?: string | null,
+  userEmail?: string
 ): { 
   isValid: boolean; 
   error?: string; 
@@ -574,7 +976,7 @@ export function validateProfileDataWithImage(
   validImage?: File;
 } {
   // First validate the profile data with section awareness
-  const profileValidation = validateProfileData(data, section);
+  const profileValidation = validateProfileData(data, section, userEmail);
   if (!profileValidation.isValid) {
     return profileValidation;
   }

@@ -35,9 +35,9 @@ export default function NoMatchEmail({
             fontSize: '16px',
             color: '#6b7280',
             margin: '0',
-            fontFamily: 'Georgia, "Times New Roman", serif'
+            fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
           }}>
-            hey {name}, about your match...
+            hey about your match...
           </Text>
         </Section>
 
@@ -94,7 +94,7 @@ export default function NoMatchEmail({
 
           {/* CTA Button */}
           <a
-            href="https://likely.one"
+            href="https://likely.one/profile"
             style={{
               display: 'inline-block',
               backgroundColor: '#1f2937',
@@ -107,7 +107,7 @@ export default function NoMatchEmail({
               fontFamily: 'Merriweather, Georgia, "Times New Roman", serif'
             }}
           >
-            update preferences →
+            update profile →
           </a>
         </Section>
 
