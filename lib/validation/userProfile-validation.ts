@@ -15,8 +15,6 @@ export const ATTRACTIVENESS_PREFERENCE_OPTIONS = [
   'black cat',
   'light aesthetic',
   'dark aesthetic',
-  'polished',
-  'effortless',
   'minimal',
   'expressive'
 ] as const;

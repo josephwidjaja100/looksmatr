@@ -43,6 +43,7 @@ const Profile = () => {
   const [tempImageUrl, setTempImageUrl] = useState<string | null>(null);
   const [showCongrats, setShowCongrats] = useState(false);
   const [congratsType, setCongratsType] = useState<'opt-in' | 'profile-complete'>('opt-in');
+  const [congratsAnimating, setCongratsAnimating] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -103,23 +104,33 @@ const Profile = () => {
     return name && year && major && gender && ethnicity.length > 0 && instagram && photo;
   };
 
-  const getNextThursdayMidnight = () => {
+  const getNextMatchDay = () => {
     const now = new Date();
-    const currentDay = now.getDay(); // 0 = Sunday, 4 = Thursday
-    let daysUntilThursday = 4 - currentDay;
+    const firstMatchDate = new Date('2026-02-14T05:00:00Z'); // February 14th, 2026 at midnight UTC
+    const firstMatchDayOfWeek = firstMatchDate.getDay(); // 6 = Saturday
     
-    // If today is Thursday or past Thursday this week, get next Thursday
-    if (daysUntilThursday <= 0) {
-      daysUntilThursday += 7;
+    // If we're before the first match date, return February 14th
+    if (now < firstMatchDate) {
+      const options: Intl.DateTimeFormatOptions = {month: 'short', day: 'numeric' };
+      return firstMatchDate.toLocaleDateString('en-US', options); // Returns "Feb 14"
     }
     
-    const nextThursday = new Date(now);
-    nextThursday.setDate(nextThursday.getDate() + daysUntilThursday);
-    nextThursday.setHours(0, 0, 0, 0); // Set to midnight
+    // If we're on or after Feb 14th, calculate the next match day (same weekday as Feb 14th)
+    const currentDay = now.getDay(); // 0 = Sunday, 6 = Saturday
+    let daysUntilMatchDay = firstMatchDayOfWeek - currentDay;
     
-    // Format: "Thursday, January 23"
+    // If today is the match day or past it this week, get next week's match day
+    if (daysUntilMatchDay <= 0) {
+      daysUntilMatchDay += 7;
+    }
+    
+    const nextMatchDay = new Date(now);
+    nextMatchDay.setDate(nextMatchDay.getDate() + daysUntilMatchDay);
+    nextMatchDay.setHours(0, 0, 0, 0); // Set to midnight
+    
+    // Format: "Feb 21" or "Mar 7" etc.
     const options: Intl.DateTimeFormatOptions = {month: 'short', day: 'numeric' };
-    return nextThursday.toLocaleDateString('en-US', options);
+    return nextMatchDay.toLocaleDateString('en-US', options);
   };
 
   const mobileSections = [
@@ -247,6 +258,12 @@ const Profile = () => {
 
   const handleSectionClick = (section: Section) => {
     if (editingSection) return;
+
+    // For opt-in matching, toggle immediately without entering edit mode
+    if (section.id === 'optInMatching') {
+      handleOptInToggle();
+      return;
+    }
 
     const sectionEl = sectionRefs.current[section.id];
     if (!sectionEl) return;
@@ -401,6 +418,7 @@ const Profile = () => {
       if (editingSection === 'optInMatching' && editValues.optInMatching) {
         setCongratsType('opt-in');
         setShowCongrats(true);
+        setTimeout(() => setCongratsAnimating(true), 10);
       }
 
       if (shouldAnalyze && result.data?.profile?.photo) {
@@ -470,6 +488,102 @@ const Profile = () => {
 
   const handleToggleOptIn = () => {
     setEditValues({ ...editValues, optInMatching: !editValues.optInMatching });
+  };
+
+  const handleOptInToggle = async () => {
+    if (status !== "authenticated" || !session) {
+      toast.error("you must be logged in to toggle matching");
+      return;
+    }
+
+    const newOptInValue = !profile.optInMatching;
+
+    // Only validate all sections if opting in to matching
+    if (newOptInValue) {
+      if (!areRequiredSectionsFilled(profile)) {
+        const missingSections = [];
+        if (!profile.name) missingSections.push('name');
+        if (!profile.year) missingSections.push('year');
+        if (!profile.major) missingSections.push('major');
+        if (!profile.gender) missingSections.push('gender');
+        if (profile.ethnicity.length === 0) missingSections.push('ethnicity');
+        if (!profile.instagram) missingSections.push('instagram');
+        if (!profile.photo) missingSections.push('photo');
+        
+        toast.error(`cannot opt in to matching. please fill: ${missingSections.join(', ')}`);
+        return;
+      }
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/user", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: profile.name,
+          year: profile.year,
+          major: profile.major,
+          instagram: profile.instagram || '',
+          gender: profile.gender,
+          ethnicity: profile.ethnicity,
+          lookingForGender: profile.lookingForGender,
+          lookingForEthnicity: profile.lookingForEthnicity,
+          optInMatching: newOptInValue,
+          photo: profile.photo,
+          attractiveness: profile.attractiveness,
+          onboardingCompleted: profile.onboardingCompleted,
+          adjectivePreferences: profile.adjectivePreferences,
+          editingSection: 'optInMatching'
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "failed to update profile");
+      }
+
+      const result = await response.json();
+      
+      if (result.data?.profile) {
+        setProfile({
+          name: result.data.profile.name || '',
+          year: result.data.profile.year || '',
+          major: result.data.profile.major || '',
+          instagram: result.data.profile.instagram || '',
+          photo: result.data.profile.photo || null,
+          gender: result.data.profile.gender || '',
+          ethnicity: result.data.profile.ethnicity || [],
+          lookingForGender: result.data.profile.lookingForGender || [],
+          lookingForEthnicity: result.data.profile.lookingForEthnicity || [],
+          attractiveness: result.data.profile.attractiveness || 0,
+          optInMatching: result.data.profile.optInMatching || false,
+          onboardingCompleted: result.data.profile.onboardingCompleted || false,
+          adjectivePreferences: result.data.profile.adjectivePreferences || []
+        });
+      }
+
+      // Check if this is opt-in action and show congratulations with delay
+      if (newOptInValue) {
+        toast.success("matching preference updated!");
+        // Add delay before showing congratulations
+        setTimeout(() => {
+          setCongratsType('opt-in');
+          setShowCongrats(true);
+          // Trigger animation slightly after mounting
+          setTimeout(() => setCongratsAnimating(true), 10);
+        }, 500);
+      } else {
+        toast.success("matching preference updated!");
+      }
+    } catch (err: unknown) {
+      console.error("opt-in toggle error:", err);
+      const message = err instanceof Error ? err.message : String(err);
+      toast.error(message || "failed to update matching preference");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -596,12 +710,20 @@ const Profile = () => {
           return (
             <div className="flex items-center justify-between w-full gap-2">
               <p className="text-sm font-medium text-gray-800 flex-shrink min-w-0">
-                {profile.optInMatching ? `you're in for the ${getNextThursdayMidnight()} match` : `you're out for ${getNextThursdayMidnight()}'s match`}
+                {profile.optInMatching ? `you're in for the ${getNextMatchDay()} match` : `you're out for ${getNextMatchDay()}'s match`}
               </p>
-              <div className="relative w-12 h-7 flex items-center rounded-full flex-shrink-0 pointer-events-none">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOptInToggle();
+                }}
+                disabled={loading}
+                className="relative w-12 h-7 flex items-center rounded-full transition-colors duration-300 cursor-pointer flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span className="sr-only">Toggle opt in to matching</span>
                 <div className={`absolute inset-0 w-12 h-7 rounded-full transition-colors duration-300 ${profile.optInMatching ? 'bg-gray-900' : 'bg-gray-300'}`} />
                 <div className={`absolute left-1 top-1 bg-white w-5 h-5 rounded-full shadow-md transition-transform duration-300 ${profile.optInMatching ? 'translate-x-5' : 'translate-x-0'}`} />
-              </div>
+              </button>
             </div>
           );
         case 'lookingFor':
@@ -746,7 +868,7 @@ const Profile = () => {
         return (
           <div className="flex items-center justify-between w-full gap-2">
             <p className="text-sm font-medium text-gray-800 flex-shrink min-w-0">
-              {editValues.optInMatching ? `you're in for the ${getNextThursdayMidnight()} match` : `you're out for ${getNextThursdayMidnight()}'s match`}
+              {editValues.optInMatching ? `you're in for the ${getNextMatchDay()} match` : `you're out for ${getNextMatchDay()}'s match`}
             </p>
             <button
               onClick={handleToggleOptIn}
@@ -951,15 +1073,24 @@ const Profile = () => {
 
         {/* Congratulations Overlay */}
         {showCongrats && (
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowCongrats(false)}>
-            <div className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12 max-w-md text-center" onClick={(e) => e.stopPropagation()}>
+          <div 
+            className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-opacity duration-300 ${congratsAnimating ? 'opacity-100' : 'opacity-0'}`}
+            onClick={() => {
+              setCongratsAnimating(false);
+              setTimeout(() => setShowCongrats(false), 200);
+            }}
+          >
+            <div 
+              className={`bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12 max-w-md text-center transition-all duration-300 ${congratsAnimating ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
+              onClick={(e) => e.stopPropagation()}
+            >
               {congratsType === 'opt-in' ? (
                 <>
                   <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4" style={{ fontFamily: 'Merriweather, serif' }}>
                     you're in!
                   </h2>
                   <p className="text-lg font-bold text-gray-800 mb-2" style={{ fontFamily: 'Merriweather, serif' }}>
-                    get ready for thursday
+                    get ready for {getNextMatchDay()}
                   </p>
                   <p className="text-gray-600 mb-6" style={{ fontFamily: 'Merriweather, serif' }}>
                     we'll send you an email with your match at midnight. go on a date, have fun, or just see where it goes...
@@ -974,12 +1105,15 @@ const Profile = () => {
                     you're all set
                   </p>
                   <p className="text-gray-600 mb-6" style={{ fontFamily: 'Merriweather, serif' }}>
-                    opt in to matching to get paired with someone perfect for you. you'll get an email at thursday midnight.
+                    opt in to matching to get paired with someone perfect for you. you'll get an email at {getNextMatchDay()} midnight.
                   </p>
                 </>
               )}
               <button
-                onClick={() => setShowCongrats(false)}
+                onClick={() => {
+                  setCongratsAnimating(false);
+                  setTimeout(() => setShowCongrats(false), 200);
+                }}
                 className="w-full px-6 py-3 bg-gray-800 text-white font-bold rounded-lg hover:bg-gray-700 transition-all duration-300"
                 style={{ fontFamily: 'Merriweather, serif' }}
               >
@@ -1007,7 +1141,7 @@ const Profile = () => {
           .safe-area-inset {
             padding-left: env(safe-area-inset-left);
             padding-right: env(safe-area-inset-right);
-            padding-top: env(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top));
           }
           .safe-scroll {
             overflow-y: auto;
