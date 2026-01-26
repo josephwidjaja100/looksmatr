@@ -99,18 +99,18 @@ export async function GET(request: NextRequest) {
     // Check if it's the right time to release matches
     // First match: February 14th, 2026 at midnight (Saturday)
     // After that: Every Saturday at midnight (same weekday as Feb 14th)
-    const now = new Date();
-    const firstMatchDate = new Date('2026-02-14T05:00:00Z'); // February 14th, 2026 at midnight UTC
+    // const now = new Date();
+    // const firstMatchDate = new Date('2026-02-14T05:00:00Z'); // February 14th, 2026 at midnight UTC
     
-    // Check if we're before the first match date
-    if (now < firstMatchDate) {
-      return NextResponse.json({ 
-        message: 'Matches will begin releasing on February 14th, 2026 at midnight',
-        currentDate: now.toISOString(),
-        firstMatchDate: firstMatchDate.toISOString(),
-        daysUntilFirstMatch: Math.ceil((firstMatchDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
-      });
-    }
+    // // Check if we're before the first match date
+    // if (now < firstMatchDate) {
+    //   return NextResponse.json({ 
+    //     message: 'Matches will begin releasing on February 14th, 2026 at midnight',
+    //     currentDate: now.toISOString(),
+    //     firstMatchDate: firstMatchDate.toISOString(),
+    //     daysUntilFirstMatch: Math.ceil((firstMatchDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+    //   });
+    // }
 
     dbClient = client;
     await dbClient.connect();
