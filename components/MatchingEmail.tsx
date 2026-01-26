@@ -97,6 +97,7 @@ export default function MatchingEmail({
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
+              textAlign: 'left',
             }}>
               {/* Match name */}
               <Text style={{
