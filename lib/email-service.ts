@@ -74,8 +74,9 @@ const getMatchingEmailHtml = (data: {
       .attractiveness-box {
         margin-left: 0 !important;
         width: 100% !important;
-        max-width: none !important;
+        max-width: 100% !important;
         min-width: auto !important;
+        box-sizing: border-box !important;
       }
     }
   </style>
@@ -106,8 +107,7 @@ const getMatchingEmailHtml = (data: {
             ${data.matchYear} • ${data.matchMajor}
           </p>
         </div>
-        <div class="attractiveness-box" style="border: 2px solid #1f2937; border-radius: 12px; padding: 16px; margin-left: 16px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 140px; max-width: 140px;">
-          <p style="font-size: 11px; color: #1f2937; margin: 0 0 8px 0; font-family: Merriweather, Georgia, 'Times New Roman', serif; text-align: center; line-height: 1.3;">
+        <div class="attractiveness-box" style="border: 2px solid #1f2937; border-radius: 12px; padding: 16px; margin-left: 16px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 140px;">          <p style="font-size: 11px; color: #1f2937; margin: 0 0 8px 0; font-family: Merriweather, Georgia, 'Times New Roman', serif; text-align: center; line-height: 1.3;">
             your attractiveness<br/>levels differ by
           </p>
           <p style="font-size: 28px; font-weight: bold; color: #1f2937; margin: 0; font-family: Merriweather, Georgia, 'Times New Roman', serif;">
