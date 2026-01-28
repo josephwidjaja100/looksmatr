@@ -10,6 +10,42 @@ const getOtpEmailHtml = (email: string, otpCode: string): string => {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    .otp-code {
+      font-size: 40px;
+      letter-spacing: 8px;
+    }
+    @media only screen and (max-width: 600px) {
+      .otp-code {
+        font-size: 36px;
+        letter-spacing: 7px;
+      }
+    }
+    @media only screen and (max-width: 500px) {
+      .otp-code {
+        font-size: 32px;
+        letter-spacing: 6px;
+      }
+    }
+    @media only screen and (max-width: 420px) {
+      .otp-code {
+        font-size: 28px;
+        letter-spacing: 5px;
+      }
+    }
+    @media only screen and (max-width: 360px) {
+      .otp-code {
+        font-size: 24px;
+        letter-spacing: 4px;
+      }
+    }
+    @media only screen and (max-width: 320px) {
+      .otp-code {
+        font-size: 20px;
+        letter-spacing: 3px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px; font-family: Merriweather, Georgia, 'Times New Roman', serif;">
@@ -22,8 +58,8 @@ const getOtpEmailHtml = (email: string, otpCode: string): string => {
       <p style="font-size: 16px; color: #4b5563; margin: 0 0 24px 0; line-height: 1.5; font-family: Merriweather, Georgia, 'Times New Roman', serif;">
         we received a request to verify your email address. enter this code to continue:
       </p>
-      <div style="background-color: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 0 0 24px 0;">
-        <p style="font-size: 40px; font-weight: bold; color: #1f2937; margin: 0; letter-spacing: 8px; font-family: Merriweather, Georgia, 'Times New Roman', serif;">
+      <div style="background-color: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 0 0 24px 0; overflow: hidden;">
+        <p class="otp-code" style="font-weight: bold; color: #1f2937; margin: 0; font-family: Merriweather, Georgia, 'Times New Roman', serif; white-space: nowrap;">
           ${otpCode}
         </p>
       </div>
