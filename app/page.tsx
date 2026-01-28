@@ -621,6 +621,9 @@ const Home = () => {
             <p className="text-sm text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
               we sent a 6-digit code to <strong>{getFullEmail(signupState.emailPrefix)}</strong>
             </p>
+            <p className="text-sm text-gray-600" style={{ fontFamily: 'Merriweather, serif' }}>
+              (check your spam folder if you don't see it)
+            </p>
           </div>
           <div className="w-full flex gap-1.5 sm:gap-2 mb-4">
             {[0, 1, 2, 3, 4, 5].map((index) => (
