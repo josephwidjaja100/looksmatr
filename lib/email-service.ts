@@ -62,6 +62,21 @@ const getMatchingEmailHtml = (data: {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    @media only screen and (max-width: 600px) {
+      .match-info-container {
+        flex-direction: column !important;
+      }
+      .match-details {
+        text-align: center !important;
+        margin-bottom: 16px !important;
+      }
+      .attractiveness-box {
+        margin-left: 0 !important;
+        width: 100% !important;
+      }
+    }
+  </style>
 </head>
 <body>
   <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px; font-family: Merriweather, Georgia, 'Times New Roman', serif;">
@@ -77,8 +92,8 @@ const getMatchingEmailHtml = (data: {
       <div style="width: 100%; margin-bottom: 32px;">
         <img src="${data.matchPhoto}" alt="Match photo" style="width: 100%; height: auto; border-radius: 12px; display: block;" />
       </div>
-      <div style="display: flex; align-items: stretch; justify-content: space-between; margin-bottom: 28px;">
-        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: left;">
+      <div class="match-info-container" style="display: flex; align-items: stretch; justify-content: space-between; margin-bottom: 28px;">
+        <div class="match-details" style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: left;">
           <p style="font-size: 32px; font-weight: bold; color: #1f2937; margin: 0 0 12px 0; font-family: Merriweather, Georgia, 'Times New Roman', serif;">
             ${data.matchName}
           </p>
@@ -89,7 +104,7 @@ const getMatchingEmailHtml = (data: {
             ${data.matchYear} • ${data.matchMajor}
           </p>
         </div>
-        <div style="border: 2px solid #1f2937; border-radius: 12px; padding: 16px; margin-left: 16px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="attractiveness-box" style="border: 2px solid #1f2937; border-radius: 12px; padding: 16px; margin-left: 16px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
           <p style="font-size: 11px; color: #1f2937; margin: 0 0 8px 0; font-family: Merriweather, Georgia, 'Times New Roman', serif; text-align: center; line-height: 1.3;">
             your attractiveness<br/>levels differ by
           </p>
