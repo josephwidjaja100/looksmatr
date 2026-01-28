@@ -74,6 +74,8 @@ const getMatchingEmailHtml = (data: {
       .attractiveness-box {
         margin-left: 0 !important;
         width: 100% !important;
+        max-width: none !important;
+        min-width: auto !important;
       }
     }
   </style>
@@ -104,7 +106,7 @@ const getMatchingEmailHtml = (data: {
             ${data.matchYear} • ${data.matchMajor}
           </p>
         </div>
-        <div class="attractiveness-box" style="border: 2px solid #1f2937; border-radius: 12px; padding: 16px; margin-left: 16px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="attractiveness-box" style="border: 2px solid #1f2937; border-radius: 12px; padding: 16px; margin-left: 16px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 140px; max-width: 140px;">
           <p style="font-size: 11px; color: #1f2937; margin: 0 0 8px 0; font-family: Merriweather, Georgia, 'Times New Roman', serif; text-align: center; line-height: 1.3;">
             your attractiveness<br/>levels differ by
           </p>
@@ -115,7 +117,7 @@ const getMatchingEmailHtml = (data: {
       </div>
       <div style="text-align: center;">
         <a href="https://instagram.com/${data.matchInstagram}" style="display: inline-block; background-color: #1f2937; color: #ffffff; font-size: 16px; font-weight: bold; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-family: Merriweather, Georgia, 'Times New Roman', serif;">
-          say hi on instagram →
+          say hi on insta →
         </a>
         <p style="font-size: 13px; color: #374151; margin: 12px 0 0 0; font-family: Merriweather, Georgia, 'Times New Roman', serif;">
           @${data.matchInstagram}
